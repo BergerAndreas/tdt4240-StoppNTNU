@@ -15,8 +15,8 @@ public class ZombieShooter extends Game {
 
 	public static String APP_TITLE = "Tødden er ei dås";
 	public static double APP_VERSION = 0.1;
-	public static int APP_DESKTOP_WIDTH = 720;
-	public static int APP_DESKTOP_HEIGHT = 420;
+	public static int APP_DESKTOP_WIDTH = 1920;
+	public static int APP_DESKTOP_HEIGHT = 1080;
 	public static int APP_FPS = 60; //Cinematic?!??!
 
 
