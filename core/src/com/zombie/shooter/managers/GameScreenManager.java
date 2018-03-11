@@ -3,6 +3,7 @@ package com.zombie.shooter.managers;
 import com.badlogic.gdx.Screen;
 import com.zombie.shooter.ZombieShooter;
 import com.zombie.shooter.screens.AbstractScreen;
+import com.zombie.shooter.screens.MenuScreen;
 import com.zombie.shooter.screens.PlayScreen;
 
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class GameScreenManager {
         initGameStates();
 
         //Set start screen here
-        setScreen(STATE.SINGLE_PLAYER);
+        setScreen(STATE.MAIN_MENU);
     }
 
     private void initGameStates(){
@@ -39,6 +40,7 @@ public class GameScreenManager {
 
         // Add new game states here
         this.gameScreen.put(STATE.SINGLE_PLAYER, new PlayScreen(app));
+        this.gameScreen.put(STATE.MAIN_MENU, new MenuScreen(app));
     }
 
     public void setScreen(STATE nextScreen) {

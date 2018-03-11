@@ -14,7 +14,7 @@ public abstract class AbstractScreen implements Screen{
 
     protected final ZombieShooter app;
 
-    Stage stage;
+   protected Stage stage;
 
     public AbstractScreen(final ZombieShooter app){
         this.app = app;
