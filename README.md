@@ -1,1 +1,0 @@
-# tdt4240-StoppNTNU

@@ -39,6 +39,7 @@ public class PlayScreen extends AbstractScreen {
                 ZombieShooter.APP_DESKTOP_HEIGHT,
                 gameCam
         );
+        b2dr = new Box2DDebugRenderer();
 
     }
 
