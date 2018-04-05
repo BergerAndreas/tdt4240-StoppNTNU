@@ -7,9 +7,10 @@ package com.zombie.shooter.enums;
 
 public enum GameState {
 
-    PLAYING,
-    PAUSED,
-    OVER,
-    ABOUT
+    MAIN_MENU,
+    SINGLE_PLAYER,
+    MULTI_PLAYER_LOBBY,
+    MULTI_PLAYER,
+    SETTINGS
 
 }

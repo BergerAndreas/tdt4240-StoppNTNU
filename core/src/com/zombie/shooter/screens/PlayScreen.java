@@ -7,12 +7,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zombie.shooter.ZombieShooter;
+import com.zombie.shooter.actors.BasicZombie;
+import com.zombie.shooter.actors.Enemy;
+import com.zombie.shooter.utils.B2DWorldUtils;
 
 import static com.zombie.shooter.utils.B2DConstants.PPM;
 
@@ -25,7 +32,7 @@ import static com.zombie.shooter.utils.B2DConstants.PPM;
  * Methods that does not come from AbstractScreen should be placed on the bottom
  */
 
-public class PlayScreen extends AbstractScreen {
+public class PlayScreen extends AbstractScreen implements ContactListener {
     // Cameras and viewport
     private OrthographicCamera gameCam;
     private Viewport gamePort;
@@ -138,6 +145,33 @@ public class PlayScreen extends AbstractScreen {
     //Place own methods here
     private void InitGame() {
         //Add stuff here
+        createEnemy();
     }
 
+    private void createEnemy() {
+        Enemy enemy = new BasicZombie(B2DWorldUtils.createEnemy(world));
+
+        stage.addActor(enemy);
+    }
+
+
+    @Override
+    public void beginContact(Contact contact) {
+
+    }
+
+    @Override
+    public void endContact(Contact contact) {
+
+    }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {
+
+    }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) {
+
+    }
 }
