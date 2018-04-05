@@ -19,7 +19,6 @@ public class ZombieShooter extends Game {
 	public static int APP_DESKTOP_WIDTH = 1024;
 	public static int APP_DESKTOP_HEIGHT = 576;
 	public static int APP_FPS = 60; //Cinematic?!??!
-	public static final Vector2 ENEMY_LINEAR_VELOCITY = new Vector2(-10f, 0);
 
 
 

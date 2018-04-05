@@ -7,17 +7,16 @@ package com.zombie.shooter.box2d;
 import com.badlogic.gdx.math.Vector2;
 import com.zombie.shooter.ZombieShooter;
 import com.zombie.shooter.enums.UserDataType;
+import com.zombie.shooter.utils.B2DConstants;
 
 public class EnemyUserData extends UserData {
 
     private Vector2 linearVelocity;
-    private String animationAssetId;
 
-    public EnemyUserData(float width, float height, String animationAssetId) {
+    public EnemyUserData(float width, float height) {
         super(width, height);
         userDataType = UserDataType.ENEMY;
-        linearVelocity = ZombieShooter.ENEMY_LINEAR_VELOCITY;
-        this.animationAssetId = animationAssetId;
+        linearVelocity = B2DConstants.ENEMY_LINEAR_VELOCITY;
     }
 
     public void setLinearVelocity(Vector2 linearVelocity) {
@@ -28,8 +27,5 @@ public class EnemyUserData extends UserData {
         return linearVelocity;
     }
 
-    public String getAnimationAssetId() {
-        return animationAssetId;
-    }
 
 }

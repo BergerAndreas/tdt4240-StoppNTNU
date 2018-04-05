@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zombie.shooter.ZombieShooter;
 import com.zombie.shooter.actors.BasicZombie;
 import com.zombie.shooter.actors.Enemy;
+import com.zombie.shooter.actors.Player;
 import com.zombie.shooter.utils.B2DWorldUtils;
 
 import static com.zombie.shooter.utils.B2DConstants.PPM;
@@ -44,6 +45,9 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
     //Skins, textures and sprites
     private Texture background;
+
+    //Add player
+    private Player player;
 
     public PlayScreen(final ZombieShooter game) {
         super(game);
@@ -146,12 +150,22 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     private void InitGame() {
         //Add stuff here
         createEnemy();
+        setUpRunner();
     }
 
     private void createEnemy() {
+        // Creates enemy
         Enemy enemy = new BasicZombie(B2DWorldUtils.createEnemy(world));
 
         stage.addActor(enemy);
+    }
+
+    private void setUpRunner() {
+        if (player != null) {
+            player.remove();
+        }
+        player = new Player(B2DWorldUtils.createRunner(world));
+        stage.addActor(player);
     }
 
 
