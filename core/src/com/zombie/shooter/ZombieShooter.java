@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.zombie.shooter.managers.GameScreenManager;
 
 public class ZombieShooter extends Game {
@@ -18,6 +19,8 @@ public class ZombieShooter extends Game {
 	public static int APP_DESKTOP_WIDTH = 1024;
 	public static int APP_DESKTOP_HEIGHT = 576;
 	public static int APP_FPS = 60; //Cinematic?!??!
+	public static final Vector2 ENEMY_LINEAR_VELOCITY = new Vector2(-10f, 0);
+
 
 
 	// Mangers

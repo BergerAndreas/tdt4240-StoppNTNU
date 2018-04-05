@@ -3,19 +3,19 @@ package com.zombie.shooter.actors;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.zombie.shooter.box2d.UserData;
 import com.zombie.shooter.utils.B2DConstants;
-import com.zombie.shooter.utils.UserData;
 
 /**
  * Created by andreasberger on 11/03/2018.
  */
 
-public abstract class Player extends Actor {
+public abstract class GameActor extends Actor {
     protected Body body;
     protected UserData userData;
     protected Rectangle screenRectangle;
 
-    public Player(Body body){
+    public GameActor(Body body){
         this.body = body;
         this.userData = (UserData) body.getUserData();
         screenRectangle = new Rectangle();
