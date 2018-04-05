@@ -55,7 +55,7 @@ public class MenuScreen extends AbstractScreen {
         gamePort.apply();
 
         //sets up camera
-        gameCam.position.set(this.gameCam.viewportWidth/2, this.gameCam.viewportHeight/2, 0);
+        gameCam.position.set(this.gameCam.viewportWidth / 2, this.gameCam.viewportHeight / 2, 0);
         gameCam.update();
         // Initializes box2d renderer
         b2dr = new Box2DDebugRenderer();
@@ -84,7 +84,7 @@ public class MenuScreen extends AbstractScreen {
     public void update(float delta) {
         // Move world forward
         // Why 6 and 2? I don't know
-        world.step(1f / ZombieShooter.APP_FPS, 6, 2 );
+        world.step(1f / ZombieShooter.APP_FPS, 6, 2);
 
         //Handle updates here
 
@@ -159,7 +159,7 @@ public class MenuScreen extends AbstractScreen {
 
 
         //Add listeners to buttons
-        singleplayerButton.addListener(new ClickListener(){
+        singleplayerButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 app.gsm.setScreen(GameScreenManager.STATE.SINGLE_PLAYER);
@@ -167,7 +167,7 @@ public class MenuScreen extends AbstractScreen {
             }
         });
         //TODO: Add multiplayer listener
-        exitButton.addListener(new ClickListener(){
+        exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
