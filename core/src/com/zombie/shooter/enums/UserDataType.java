@@ -7,6 +7,8 @@ package com.zombie.shooter.enums;
 public enum UserDataType {
 
     PLAYER,
-    ENEMY
+    ENEMY,
+    WALL,
+    LANE
 
 }

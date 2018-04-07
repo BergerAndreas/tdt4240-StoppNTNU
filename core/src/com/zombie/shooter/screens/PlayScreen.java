@@ -20,7 +20,11 @@ import com.zombie.shooter.ZombieShooter;
 import com.zombie.shooter.actors.BasicZombie;
 import com.zombie.shooter.actors.Enemy;
 import com.zombie.shooter.actors.Player;
+import com.zombie.shooter.actors.Wall;
+import com.zombie.shooter.utils.B2DConstants;
 import com.zombie.shooter.utils.B2DWorldUtils;
+
+import java.util.ArrayList;
 
 import static com.zombie.shooter.utils.B2DConstants.PPM;
 
@@ -48,6 +52,9 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
     //Add player
     private Player player;
+
+    //Add walls
+    private ArrayList<Wall> walls;
 
     public PlayScreen(final ZombieShooter game) {
         super(game);
@@ -145,12 +152,12 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
     }
 
-
     //Place own methods here
     private void InitGame() {
         //Add stuff here
         createEnemy();
         setUpRunner();
+        setUpWall();
     }
 
     private void createEnemy() {
@@ -168,6 +175,12 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         stage.addActor(player);
     }
 
+    private void setUpWall() {
+        for (int i = 0; i < B2DConstants.WALL_COUNT+1; i++) {
+            Wall wall = new Wall(B2DWorldUtils.createWall(world), i*130);
+            stage.addActor(wall);
+        }
+    }
 
     @Override
     public void beginContact(Contact contact) {

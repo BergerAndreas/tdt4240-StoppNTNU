@@ -41,7 +41,7 @@ public class Player extends GameActor {
 
         /* TODO: Do something when hit
         if (hit) {
-            // When he's hit we also want to apply rotation if the body has been rotated
+            // When he's hit we also want to apply roreturn null;return null;tation if the body has been rotated
             batch.draw(hitTexture, x, y, width * 0.5f, screenRectangle.height * 0.5f, width, screenRectangle.height, 1f,
                     1f, (float) Math.toDegrees(body.getAngle()));
         }
