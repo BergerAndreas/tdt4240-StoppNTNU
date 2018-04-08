@@ -201,8 +201,8 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
                 this.stage.getCamera().viewportHeight);
 
         //Creates bounds for firebutton
-        fireBounds = new Rectangle(this.stage.getCamera().viewportWidth / 3, 0,
-                this.stage.getCamera().viewportWidth / 9, this.stage.getCamera().viewportHeight / 3);
+        fireBounds = new Rectangle(this.stage.getCamera().viewportWidth-200, 0,
+                this.stage.getCamera().viewportWidth/8, this.stage.getCamera().viewportHeight/6);
         //Creates a new firebutton with above bounds
         fireButton = new FireButton(fireBounds, new GameFireButtonListener());
         //Adds firebutton to stage
@@ -231,9 +231,13 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
             @Override
             public boolean touchDown(int x, int y, int pointer, int button) {
                 // Need to get the actual coordinates
+                Vector2 tmpVec2 = new Vector2();
                 translateScreenToWorldCoordinates(x, y);
-                if (fireButtonTouched(touchPoint.x, touchPoint.y)) {
-                    System.out.println("y");
+                stage.getViewport().unproject(tmpVec2.set(x, y));
+
+                // Passes touch control to button observer thingy ¯\_(ツ)_/¯
+                if(fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)){
+                    stage.touchDown(x,y,pointer,button);
                 }
 
                 return true;
@@ -279,11 +283,11 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         // Adds observer
         @Override
         public void onFire() {
-
+            onFireButtonPressed();
         }
     }
-
-    private void onFire(){
+    //Method called when FireButton pressed
+    private void onFireButtonPressed(){
         System.out.println("Button pressed");
     }
 
