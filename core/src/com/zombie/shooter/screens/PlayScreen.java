@@ -201,8 +201,8 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
                 this.stage.getCamera().viewportHeight);
 
         //Creates bounds for firebutton
-        fireBounds = new Rectangle(this.stage.getCamera().viewportWidth-200, 0,
-                this.stage.getCamera().viewportWidth/8, this.stage.getCamera().viewportHeight/6);
+        fireBounds = new Rectangle(this.stage.getCamera().viewportWidth - 200, 0,
+                this.stage.getCamera().viewportWidth / 8, this.stage.getCamera().viewportHeight / 6);
         //Creates a new firebutton with above bounds
         fireButton = new FireButton(fireBounds, new GameFireButtonListener());
         //Adds firebutton to stage
@@ -221,10 +221,6 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         return topLane.contains(x, y);
     }
 
-    private boolean fireButtonTouched(float x, float y) {
-        return fireBounds.contains(x, y);
-    }
-
     private void setupInput() {
         // Enables playscreen to control input
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -236,8 +232,8 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
                 stage.getViewport().unproject(tmpVec2.set(x, y));
 
                 // Passes touch control to button observer thingy ¯\_(ツ)_/¯
-                if(fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)){
-                    stage.touchDown(x,y,pointer,button);
+                if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+                    stage.touchDown(x, y, pointer, button);
                 }
 
                 return true;
@@ -251,7 +247,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         });
     }
 
-    //Helper function to get actual world coordinates
+    //Helper function to get actual world coordinates used for touch input
     private void translateScreenToWorldCoordinates(int x, int y) {
         this.stage.getCamera().unproject(touchPoint.set(x, y, 0));
     }
@@ -278,16 +274,21 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     }
 
     // Button listeners
-    private class GameFireButtonListener implements FireButton.FireButtonListener{
+
+    //Firebutton listener class
+    private class GameFireButtonListener implements FireButton.FireButtonListener {
 
         // Adds observer
         @Override
         public void onFire() {
+            //Calls this method when button is pressed
             onFireButtonPressed();
         }
     }
+
     //Method called when FireButton pressed
-    private void onFireButtonPressed(){
+    private void onFireButtonPressed() {
+        //TODO: implement fire button logic
         System.out.println("Button pressed");
     }
 

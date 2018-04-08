@@ -17,8 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public abstract class GameButton extends Button {
 
     protected Rectangle bounds;
-    private Skin skin;
-
 
     public GameButton(Rectangle bounds) {
         this.bounds = bounds;
