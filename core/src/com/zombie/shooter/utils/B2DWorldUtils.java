@@ -59,11 +59,11 @@ public class B2DWorldUtils {
         );
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(3f, 60f);
+        shape.setAsBox(0.0f, B2DConstants.WALL_HEIGHT);
 
         Body body = world.createBody(bodyDef);
-        body.createFixture(shape, 60f);
-        body.setUserData(new WallUserData(1f, 60f));
+        body.createFixture(shape, B2DConstants.WALL_DENSITY);
+        body.setUserData(new WallUserData(B2DConstants.WALL_WIDTH, B2DConstants.WALL_HEIGHT));
         shape.dispose();
         return body;
     }
