@@ -14,7 +14,7 @@ import com.zombie.shooter.managers.GameScreenManager;
 
 public class ZombieShooter extends Game {
 
-	public static String APP_TITLE = "Tødden er ei dås";
+	public static String APP_TITLE = "Ugly Z";
 	public static double APP_VERSION = 0.1;
 	public static int APP_DESKTOP_WIDTH = 1024;
 	public static int APP_DESKTOP_HEIGHT = 576;
