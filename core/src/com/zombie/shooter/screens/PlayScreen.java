@@ -29,6 +29,7 @@ import com.zombie.shooter.actors.Wall;
 import com.zombie.shooter.actors.buttons.FireButton;
 import com.zombie.shooter.utils.B2DConstants;
 import com.zombie.shooter.utils.B2DWorldUtils;
+import com.zombie.shooter.utils.utils;
 
 import java.util.ArrayList;
 
@@ -70,6 +71,11 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     //buttons
     private FireButton fireButton;
 
+    //Difficulty counter
+    private int difficulty;
+    private float gameTime;
+    private float prevVal;
+
     public PlayScreen(final ZombieShooter game) {
         super(game);
         this.gameCam = new OrthographicCamera();
@@ -90,6 +96,10 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         //Initialize texture
         background = new Texture("street.jpg");
         stage = new Stage(gamePort, app.batch);
+
+        this.difficulty = 10;
+        this.gameTime = 1.0f;
+        this.prevVal = 1.0f;
 
     }
 
@@ -112,6 +122,23 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
         //Handle updates here
         this.stage.act(delta);
+
+        this.gameTime += delta;
+
+        if(Math.floor(gameTime) != prevVal){
+            //Spawn Zombies
+            if(Math.floor(this.gameTime) % 9 == 0) {
+                spawnZombieWave();
+            }
+            prevVal += 1;
+
+            if(prevVal % 17 == 0) {
+                System.out.println("Difficulty increased");
+                difficulty += 5;
+            }
+        }
+
+
     }
 
     @Override
@@ -167,7 +194,6 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     //Place own methods here
     private void InitGame() {
         //Add stuff here
-        createEnemy();
         setUpRunner();
         setUpWall();
         setUpTouchControlAreas();
@@ -175,9 +201,9 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     }
 
     // Creates enemy
-    private void createEnemy() {
+    private void createEnemy(float x, float y) {
         //Initializes basic zombie
-        Enemy enemy = new BasicZombie(B2DWorldUtils.createEnemy(world));
+        Enemy enemy = new BasicZombie(B2DWorldUtils.createEnemy(world, x, y));
 
         //Adds enemy to current stage
         stage.addActor(enemy);
@@ -299,6 +325,17 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     private void onFireButtonPressed() {
         //TODO: implement fire button logic
         System.out.println("Button pressed");
+    }
+
+    private void spawnZombieWave() {
+        int waveCount = utils.randInt(this.difficulty - 6, this.difficulty);
+
+        for (int i = 0; i < waveCount; i++) {
+            int spawnCordY = utils.randInt(2, 16);
+            int spawnCordX = utils.randInt(30, 50);
+            createEnemy(spawnCordX ,spawnCordY);
+        }
+
     }
 
 }

@@ -20,8 +20,12 @@ public class B2DWorldUtils {
         return new World(B2DConstants.WORLD_GRAVITY, true);
     }
 
-    public static Body createEnemy(World world) {
+    public static Body createEnemy(World world, float x, float y) {
         EnemyType enemyType = EnemyType.BASIC_ENEMY;
+
+        //Jaaaaank
+        enemyType.setY(y);
+        enemyType.setX(x);
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(new Vector2(enemyType.getX(), enemyType.getY()));
