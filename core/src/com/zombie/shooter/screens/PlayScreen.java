@@ -26,6 +26,7 @@ import com.zombie.shooter.actors.BasicZombie;
 import com.zombie.shooter.actors.Enemy;
 import com.zombie.shooter.actors.Player;
 import com.zombie.shooter.actors.buttons.FireButton;
+import com.zombie.shooter.utils.B2DConstants;
 import com.zombie.shooter.utils.B2DWorldUtils;
 
 import static com.zombie.shooter.utils.B2DConstants.PPM;
@@ -243,6 +244,15 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
             public boolean touchUp(int x, int y, int pointer, int button) {
                 // your touch up code here
                 return true; // return true to indicate the event was handled
+            }
+            @Override
+            public boolean touchDragged(int x, int y, int pointer){
+                //FiXME: Change move condition
+                Vector2 tmpVec2 = new Vector2();
+                translateScreenToWorldCoordinates(x, y);
+                stage.getViewport().unproject(tmpVec2.set(x, y));
+                player.setTransform(new Vector2(player.getUserData().getRunningPosition().x,tmpVec2.y/B2DConstants.PPM), 0);
+                return true;
             }
         });
     }
