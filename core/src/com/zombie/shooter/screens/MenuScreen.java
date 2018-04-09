@@ -3,6 +3,7 @@ package com.zombie.shooter.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -60,8 +61,8 @@ public class MenuScreen extends AbstractScreen {
         // Initializes box2d renderer
         b2dr = new Box2DDebugRenderer();
         //Initialize skins
-        atlas = new TextureAtlas("./skins/neutralizer-ui.atlas");
-        skin = new Skin(Gdx.files.internal("./skins/neutralizer-ui.json"));
+        atlas = new TextureAtlas(Gdx.files.internal("skins/neutralizer-ui.atlas"));
+        skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
         background = new Texture("street.jpg");
         stage = new Stage(gamePort, app.batch);
     }
