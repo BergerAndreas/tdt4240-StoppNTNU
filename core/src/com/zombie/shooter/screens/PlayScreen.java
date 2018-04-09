@@ -1,11 +1,16 @@
 package com.zombie.shooter.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -20,12 +25,14 @@ import com.zombie.shooter.ZombieShooter;
 import com.zombie.shooter.actors.BasicZombie;
 import com.zombie.shooter.actors.Enemy;
 import com.zombie.shooter.actors.Player;
+import com.zombie.shooter.actors.buttons.FireButton;
+import com.zombie.shooter.utils.B2DConstants;
 import com.zombie.shooter.utils.B2DWorldUtils;
 
 import static com.zombie.shooter.utils.B2DConstants.PPM;
 
 /**
- *  Created by opium on 09.03.18.
+ * Created by opium on 09.03.18.
  */
 
 /**
@@ -49,6 +56,16 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     //Add player
     private Player player;
 
+    //Touchinput
+    private Vector3 touchPoint;
+    private Rectangle bottomLane;
+    private Rectangle midLane;
+    private Rectangle topLane;
+    private Rectangle fireBounds;
+
+    //buttons
+    private FireButton fireButton;
+
     public PlayScreen(final ZombieShooter game) {
         super(game);
         this.gameCam = new OrthographicCamera();
@@ -62,7 +79,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         gamePort.apply();
 
         //sets up camera
-        gameCam.position.set(this.gameCam.viewportWidth/2, this.gameCam.viewportHeight/2, 0);
+        gameCam.position.set(this.gameCam.viewportWidth / 2, this.gameCam.viewportHeight / 2, 0);
         gameCam.update();
         // Initializes box2d renderer
         b2dr = new Box2DDebugRenderer();
@@ -79,9 +96,6 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         world = new World(new Vector2(0f, 0f), false);
         app.shapeBatch.setProjectionMatrix(gameCam.combined);
         app.batch.setProjectionMatrix(gameCam.combined);
-
-        // Enables menu to control input
-        Gdx.input.setInputProcessor(this.stage);
         InitGame();
 
     }
@@ -90,10 +104,9 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     public void update(float delta) {
         // Move world forward
         // Why 6 and 2? I don't know
-        world.step(1f / ZombieShooter.APP_FPS, 6, 2 );
+        world.step(1f / ZombieShooter.APP_FPS, 6, 2);
 
         //Handle updates here
-
         this.stage.act(delta);
     }
 
@@ -104,6 +117,8 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
         //Sets background of gamescreen
         app.batch.begin();
+        //Renders game background
+
         app.batch.draw(background, 0, 0, ZombieShooter.APP_DESKTOP_WIDTH,
                 ZombieShooter.APP_DESKTOP_HEIGHT);
         app.batch.end();
@@ -151,24 +166,103 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         //Add stuff here
         createEnemy();
         setUpRunner();
+        setUpTouchControlAreas();
+        setupInput();
     }
 
+    // Creates enemy
     private void createEnemy() {
-        // Creates enemy
+        //Initializes basic zombie
         Enemy enemy = new BasicZombie(B2DWorldUtils.createEnemy(world));
 
+        //Adds enemy to current stage
         stage.addActor(enemy);
     }
 
+    //Sets up player
     private void setUpRunner() {
+        //Removes existing players upon setup
         if (player != null) {
             player.remove();
         }
         player = new Player(B2DWorldUtils.createRunner(world));
+
+        //adds enemy to current stage
         stage.addActor(player);
     }
 
+    private void setUpTouchControlAreas() {
+        touchPoint = new Vector3();
+        //TODO: Update this when constants available, also, draw them
+        bottomLane = new Rectangle(0, 0, this.stage.getCamera().viewportWidth / 2,
+                this.stage.getCamera().viewportHeight);
+        midLane = new Rectangle(0, 0, this.stage.getCamera().viewportWidth / 2,
+                this.stage.getCamera().viewportHeight);
+        topLane = new Rectangle(0, 0, this.stage.getCamera().viewportWidth / 2,
+                this.stage.getCamera().viewportHeight);
 
+        //Creates bounds for firebutton
+        fireBounds = new Rectangle(this.stage.getCamera().viewportWidth - 200, 0,
+                this.stage.getCamera().viewportWidth / 8, this.stage.getCamera().viewportHeight / 6);
+        //Creates a new firebutton with above bounds
+        fireButton = new FireButton(fireBounds, new GameFireButtonListener());
+        //Adds firebutton to stage
+        this.stage.addActor(fireButton);
+    }
+
+    private boolean bottomLaneTouched(float x, float y) {
+        return bottomLane.contains(x, y);
+    }
+
+    private boolean midLaneTouched(float x, float y) {
+        return midLane.contains(x, y);
+    }
+
+    private boolean topLaneTouched(float x, float y) {
+        return topLane.contains(x, y);
+    }
+
+    private void setupInput() {
+        // Enables playscreen to control input
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean touchDown(int x, int y, int pointer, int button) {
+                // Need to get the actual coordinates
+                Vector2 tmpVec2 = new Vector2();
+                translateScreenToWorldCoordinates(x, y);
+                stage.getViewport().unproject(tmpVec2.set(x, y));
+
+                // Passes touch control to button observer thingy ¯\_(ツ)_/¯
+                if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+                    stage.touchDown(x, y, pointer, button);
+                }
+
+                return true;
+            }
+
+            @Override
+            public boolean touchUp(int x, int y, int pointer, int button) {
+                // your touch up code here
+                return true; // return true to indicate the event was handled
+            }
+            @Override
+            public boolean touchDragged(int x, int y, int pointer){
+                //FiXME: Change move condition
+                Vector2 tmpVec2 = new Vector2();
+                translateScreenToWorldCoordinates(x, y);
+                stage.getViewport().unproject(tmpVec2.set(x, y));
+                player.setTransform(new Vector2(player.getUserData().getRunningPosition().x,tmpVec2.y/B2DConstants.PPM), 0);
+                return true;
+            }
+        });
+    }
+
+    //Helper function to get actual world coordinates used for touch input
+    private void translateScreenToWorldCoordinates(int x, int y) {
+        this.stage.getCamera().unproject(touchPoint.set(x, y, 0));
+    }
+
+    //Contact listeners
     @Override
     public void beginContact(Contact contact) {
 
@@ -188,4 +282,24 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
     }
+
+    // Button listeners
+
+    //Firebutton listener class
+    private class GameFireButtonListener implements FireButton.FireButtonListener {
+
+        // Adds observer
+        @Override
+        public void onFire() {
+            //Calls this method when button is pressed
+            onFireButtonPressed();
+        }
+    }
+
+    //Method called when FireButton pressed
+    private void onFireButtonPressed() {
+        //TODO: implement fire button logic
+        System.out.println("Button pressed");
+    }
+
 }
