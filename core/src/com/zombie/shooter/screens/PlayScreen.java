@@ -247,6 +247,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
             }
             @Override
             public boolean touchDragged(int x, int y, int pointer){
+                System.out.println(pointer);
                 Vector2 tmpVec2 = new Vector2();
                 translateScreenToWorldCoordinates(x, y);
                 stage.getViewport().unproject(tmpVec2.set(x, y));
