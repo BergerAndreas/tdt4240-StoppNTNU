@@ -22,15 +22,15 @@ public class B2DConstants {
     public static final float GROUND_HEIGHT = 2f;
     public static final float GROUND_DENSITY = 0f;
 
-    public static final float PLAYER_X = 2;
+    public static final float PLAYER_X = 0.5f;
     public static final float PLAYER_Y = GROUND_Y + GROUND_HEIGHT;
     public static final float PLAYER_WIDTH = 1f;
     public static final float PLAYER_HEIGHT = 2f;
     public static final float PLAYER_GRAVITY_SCALE = 3f;
     public static final float PLAYER_DENSITY = 0.5f;
 
-    public static final float WALL_X = 0;
-    public static final float WALL_Y = 40f;
+    public static final float WALL_X = 8.5f;
+    public static final float WALL_Y = 60f;
     public static final float WALL_HEIGHT = GROUND_HEIGHT / 3;
     public static final float WALL_WIDTH = 1f;
     public static final float WALL_GRAVITY_SCALE = 0f;

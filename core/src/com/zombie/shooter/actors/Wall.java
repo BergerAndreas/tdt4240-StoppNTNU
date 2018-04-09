@@ -14,14 +14,13 @@ public class Wall extends GameActor {
     private float stateTime;
     private Sprite wallSprite;
     private float wallHealth;
-    private float y;
 
-    public Wall(Body body, float y){
+    public Wall(Body body){
         super(body);
         wallSprite = new Sprite(new Texture("wall.jpg"));
         stateTime = 0f;
         wallHealth = B2DConstants.WALL_HEALTH;
-        this.y = y;
+        body.setUserData("wall");
     }
 
     public float getWallHealth(){
@@ -43,9 +42,10 @@ public class Wall extends GameActor {
         stateTime += Gdx.graphics.getDeltaTime();
 
         //FIXME: Add variables to constants config
-        batch.draw(wallSprite, 100, this.y, 60, 200);
+        batch.draw(wallSprite, 100, 0, 60, 600);
 
     }
+
 
     //TODO: ADD hit logic
     public void wallHit(){

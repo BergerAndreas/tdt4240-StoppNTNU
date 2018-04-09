@@ -23,7 +23,7 @@ public class B2DWorldUtils {
     public static Body createEnemy(World world) {
         EnemyType enemyType = EnemyType.BASIC_ENEMY;
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(new Vector2(enemyType.getX(), enemyType.getY()));
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(enemyType.getWidth() / 2, enemyType.getHeight() / 2);
@@ -53,27 +53,17 @@ public class B2DWorldUtils {
 
     public static Body createWall(World world) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(
                 new Vector2(B2DConstants.WALL_X, B2DConstants.WALL_Y)
         );
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(
-                B2DConstants.WALL_WIDTH / 2,
-                B2DConstants.WALL_HEIGHT / 2
-                );
+        shape.setAsBox(3f, 60f);
 
         Body body = world.createBody(bodyDef);
-        body.setGravityScale(B2DConstants.WALL_GRAVITY_SCALE);
-        body.createFixture(shape, B2DConstants.WALL_DENSITY);
-        body.resetMassData();
-        body.setUserData(
-                new WallUserData(
-                        B2DConstants.WALL_WIDTH,
-                        B2DConstants.WALL_HEIGHT
-                        )
-        );
+        body.createFixture(shape, 60f);
+        body.setUserData(new WallUserData(1f, 60f));
         shape.dispose();
         return body;
     }

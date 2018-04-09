@@ -163,7 +163,6 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     private void createEnemy() {
         // Creates enemy
         Enemy enemy = new BasicZombie(B2DWorldUtils.createEnemy(world));
-
         stage.addActor(enemy);
     }
 
@@ -176,10 +175,8 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     }
 
     private void setUpWall() {
-        for (int i = 0; i < B2DConstants.WALL_COUNT+1; i++) {
-            Wall wall = new Wall(B2DWorldUtils.createWall(world), i*130);
-            stage.addActor(wall);
-        }
+        Wall wall = new Wall(B2DWorldUtils.createWall(world));
+        stage.addActor(wall);
     }
 
     @Override
