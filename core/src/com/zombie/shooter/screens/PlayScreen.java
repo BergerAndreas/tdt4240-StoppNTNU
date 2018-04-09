@@ -64,9 +64,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
   
     //Touchinput
     private Vector3 touchPoint;
-    private Rectangle bottomLane;
-    private Rectangle midLane;
-    private Rectangle topLane;
+    private Rectangle playerLane;
     private Rectangle fireBounds;
 
     //buttons
@@ -205,13 +203,8 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     private void setUpTouchControlAreas() {
         touchPoint = new Vector3();
         //TODO: Update this when constants available, also, draw them
-        bottomLane = new Rectangle(0, 0, this.stage.getCamera().viewportWidth / 2,
+        playerLane = new Rectangle(0, 0, 7*B2DConstants.PPM,
                 this.stage.getCamera().viewportHeight);
-        midLane = new Rectangle(0, 0, this.stage.getCamera().viewportWidth / 2,
-                this.stage.getCamera().viewportHeight);
-        topLane = new Rectangle(0, 0, this.stage.getCamera().viewportWidth / 2,
-                this.stage.getCamera().viewportHeight);
-
         //Creates bounds for firebutton
         fireBounds = new Rectangle(this.stage.getCamera().viewportWidth - 200, 0,
                 this.stage.getCamera().viewportWidth / 8, this.stage.getCamera().viewportHeight / 6);
@@ -221,17 +214,10 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         this.stage.addActor(fireButton);
     }
 
-    private boolean bottomLaneTouched(float x, float y) {
-        return bottomLane.contains(x, y);
+    private boolean playerLaneTouched(float x, float y) {
+        return playerLane.contains(x, y);
     }
 
-    private boolean midLaneTouched(float x, float y) {
-        return midLane.contains(x, y);
-    }
-
-    private boolean topLaneTouched(float x, float y) {
-        return topLane.contains(x, y);
-    }
 
     private void setupInput() {
         // Enables playscreen to control input
@@ -247,7 +233,6 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
                 if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
                     stage.touchDown(x, y, pointer, button);
                 }
-
                 return true;
             }
 
@@ -258,11 +243,14 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
             }
             @Override
             public boolean touchDragged(int x, int y, int pointer){
-                System.out.println(pointer);
                 Vector2 tmpVec2 = new Vector2();
                 translateScreenToWorldCoordinates(x, y);
                 stage.getViewport().unproject(tmpVec2.set(x, y));
-                player.setTransform(new Vector2(player.getUserData().getRunningPosition().x,tmpVec2.y/B2DConstants.PPM), 0);
+
+                if(playerLaneTouched(tmpVec2.x, tmpVec2.y)){
+
+                    player.setTransform(new Vector2(player.getUserData().getRunningPosition().x,tmpVec2.y/B2DConstants.PPM), 0);
+                }
                 return true;
             }
         });
