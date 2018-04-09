@@ -35,6 +35,9 @@ public class BasicZombie extends Enemy {
         stateTime = 0f;
     }
 
+    public void stopAnimation(){
+        System.out.println("stop animation");
+    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {

@@ -14,4 +14,5 @@ public class WallUserData extends UserData {
         super(width, height);
         userDataType = UserDataType.WALL;
     }
+
 }
