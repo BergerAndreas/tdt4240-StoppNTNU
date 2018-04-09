@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -27,6 +28,7 @@ import com.zombie.shooter.actors.Enemy;
 import com.zombie.shooter.actors.Player;
 import com.zombie.shooter.actors.Wall;
 import com.zombie.shooter.actors.buttons.FireButton;
+import com.zombie.shooter.enums.UserDataType;
 import com.zombie.shooter.utils.B2DConstants;
 import com.zombie.shooter.utils.B2DWorldUtils;
 
@@ -98,6 +100,8 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
         // Initialize new world for this screen
         world = new World(new Vector2(0f, 0f), false);
+        //Set the world's contact listener to this class
+        world.setContactListener(this);
         app.shapeBatch.setProjectionMatrix(gameCam.combined);
         app.batch.setProjectionMatrix(gameCam.combined);
         InitGame();
@@ -264,7 +268,11 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     //Contact listeners
     @Override
     public void beginContact(Contact contact) {
-
+        Body a = contact.getFixtureA().getBody();
+        Body b = contact.getFixtureB().getBody();
+        if(((B2DWorldUtils.bodyIsWall(b))&&(B2DWorldUtils.bodyIsEnemy(a)))){
+            //TODO: Stop animation when body hits wall
+        }
     }
 
     @Override

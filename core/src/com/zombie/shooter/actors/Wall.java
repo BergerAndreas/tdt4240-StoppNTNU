@@ -20,7 +20,6 @@ public class Wall extends GameActor {
         wallSprite = new Sprite(new Texture("wall.jpg"));
         stateTime = 0f;
         wallHealth = B2DConstants.WALL_HEALTH;
-        body.setUserData("wall");
     }
 
     public float getWallHealth(){
