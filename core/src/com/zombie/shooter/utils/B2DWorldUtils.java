@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.zombie.shooter.box2d.EnemyUserData;
 import com.zombie.shooter.box2d.PlayerUserData;
+import com.zombie.shooter.box2d.WallUserData;
 import com.zombie.shooter.enums.EnemyType;
 
 /**
@@ -22,7 +23,7 @@ public class B2DWorldUtils {
     public static Body createEnemy(World world) {
         EnemyType enemyType = EnemyType.BASIC_ENEMY;
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(new Vector2(enemyType.getX(), enemyType.getY()));
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(enemyType.getWidth() / 2, enemyType.getHeight() / 2);
@@ -50,5 +51,21 @@ public class B2DWorldUtils {
         return body;
     }
 
+    public static Body createWall(World world) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(
+                new Vector2(B2DConstants.WALL_X, B2DConstants.WALL_Y)
+        );
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(3f, 60f);
+
+        Body body = world.createBody(bodyDef);
+        body.createFixture(shape, 60f);
+        body.setUserData(new WallUserData(1f, 60f));
+        shape.dispose();
+        return body;
+    }
 
 }

@@ -25,9 +25,12 @@ import com.zombie.shooter.ZombieShooter;
 import com.zombie.shooter.actors.BasicZombie;
 import com.zombie.shooter.actors.Enemy;
 import com.zombie.shooter.actors.Player;
+import com.zombie.shooter.actors.Wall;
 import com.zombie.shooter.actors.buttons.FireButton;
 import com.zombie.shooter.utils.B2DConstants;
 import com.zombie.shooter.utils.B2DWorldUtils;
+
+import java.util.ArrayList;
 
 import static com.zombie.shooter.utils.B2DConstants.PPM;
 
@@ -56,6 +59,9 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     //Add player
     private Player player;
 
+    //Add walls
+    private ArrayList<Wall> walls;
+  
     //Touchinput
     private Vector3 touchPoint;
     private Rectangle bottomLane;
@@ -160,12 +166,12 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
     }
 
-
     //Place own methods here
     private void InitGame() {
         //Add stuff here
         createEnemy();
         setUpRunner();
+        setUpWall();
         setUpTouchControlAreas();
         setupInput();
     }
@@ -191,6 +197,11 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         stage.addActor(player);
     }
 
+    private void setUpWall() {
+        Wall wall = new Wall(B2DWorldUtils.createWall(world));
+        stage.addActor(wall);
+    }
+  
     private void setUpTouchControlAreas() {
         touchPoint = new Vector3();
         //TODO: Update this when constants available, also, draw them
