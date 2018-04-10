@@ -5,6 +5,7 @@ import com.zombie.shooter.ZombieShooter;
 import com.zombie.shooter.screens.AbstractScreen;
 import com.zombie.shooter.screens.MenuScreen;
 import com.zombie.shooter.screens.PlayScreen;
+import com.zombie.shooter.screens.Splash;
 
 import java.util.HashMap;
 
@@ -19,6 +20,7 @@ public class GameScreenManager {
 
     //Add additional screens as they are added
     public enum STATE{
+        SPLASH,
         MAIN_MENU,
         SINGLE_PLAYER,
         MULTI_PLAYER_LOBBY,
@@ -32,7 +34,7 @@ public class GameScreenManager {
         initGameStates();
 
         //Set start screen here
-        setScreen(STATE.MAIN_MENU);
+        setScreen(STATE.SPLASH);
     }
 
     private void initGameStates(){
@@ -41,6 +43,7 @@ public class GameScreenManager {
         // Add new game states here
         this.gameScreen.put(STATE.SINGLE_PLAYER, new PlayScreen(app));
         this.gameScreen.put(STATE.MAIN_MENU, new MenuScreen(app));
+        this.gameScreen.put(STATE.SPLASH, new Splash(app));
     }
 
     public void setScreen(STATE nextScreen) {

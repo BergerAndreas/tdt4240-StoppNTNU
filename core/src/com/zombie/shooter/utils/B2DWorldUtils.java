@@ -8,8 +8,10 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.zombie.shooter.box2d.EnemyUserData;
 import com.zombie.shooter.box2d.PlayerUserData;
+import com.zombie.shooter.box2d.UserData;
 import com.zombie.shooter.box2d.WallUserData;
 import com.zombie.shooter.enums.EnemyType;
+import com.zombie.shooter.enums.UserDataType;
 
 /**
  * Created by Torstein on 4/5/2018.
@@ -69,6 +71,12 @@ public class B2DWorldUtils {
         Body body = world.createBody(bodyDef);
         body.createFixture(shape, B2DConstants.WALL_DENSITY);
         body.setUserData(new WallUserData(width, height));
+        shape.setAsBox(0.0f, B2DConstants.WALL_HEIGHT);
+
+        Body body = world.createBody(bodyDef);
+        body.createFixture(shape, B2DConstants.WALL_DENSITY);
+        WallUserData wallUserData = new WallUserData(B2DConstants.WALL_WIDTH, B2DConstants.WALL_HEIGHT);
+        body.setUserData(wallUserData);
         shape.dispose();
         return body;
     }
@@ -90,4 +98,18 @@ public class B2DWorldUtils {
 
     }
 
+    public static boolean bodyIsEnemy(Body body) {
+        UserData userData = (UserData) body.getUserData();
+
+        return userData != null && userData.getUserDataType() == UserDataType.ENEMY;
+    }
+
+    public static boolean bodyIsWall(Body body) {
+        UserData userData = (UserData) body.getUserData();
+        return userData != null && userData.getUserDataType() == UserDataType.WALL;
+    }
+
+    public static void stopAnimation(Body body){
+
+    }
 }
