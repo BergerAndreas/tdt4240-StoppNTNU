@@ -18,6 +18,8 @@ public class GameScreenManager {
     public final ZombieShooter app;
     private HashMap<STATE, AbstractScreen> gameScreen;
 
+    private boolean startSplash = false;
+
     //Add additional screens as they are added
     public enum STATE{
         SPLASH,
@@ -34,7 +36,11 @@ public class GameScreenManager {
         initGameStates();
 
         //Set start screen here
-        setScreen(STATE.SPLASH);
+        if (startSplash) {
+            setScreen(STATE.SPLASH);
+        }else {
+            setScreen(STATE.MAIN_MENU);
+        }
     }
 
     private void initGameStates(){
