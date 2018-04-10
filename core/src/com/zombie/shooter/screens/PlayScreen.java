@@ -367,7 +367,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     private void spawnZombieWave() {
         int waveCount = utils.randInt(this.difficulty - 6, this.difficulty);
 
-        for (int i = 0; i < waveCount*10; i++) {
+        for (int i = 0; i < waveCount; i++) {
             // Don't mind the magic space numbers
             int spawnCordY = utils.randInt(5, (int) gameCam.viewportHeight - 80);
             int spawnCordX = utils.randInt(30, 50);

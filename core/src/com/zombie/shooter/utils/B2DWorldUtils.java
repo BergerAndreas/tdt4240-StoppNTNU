@@ -70,13 +70,10 @@ public class B2DWorldUtils {
 
         Body body = world.createBody(bodyDef);
         body.createFixture(shape, B2DConstants.WALL_DENSITY);
-        body.setUserData(new WallUserData(width, height));
-        shape.setAsBox(0.0f, B2DConstants.WALL_HEIGHT);
 
-        Body body = world.createBody(bodyDef);
-        body.createFixture(shape, B2DConstants.WALL_DENSITY);
         WallUserData wallUserData = new WallUserData(B2DConstants.WALL_WIDTH, B2DConstants.WALL_HEIGHT);
         body.setUserData(wallUserData);
+        shape.setAsBox(0.0f, B2DConstants.WALL_HEIGHT);
         shape.dispose();
         return body;
     }
