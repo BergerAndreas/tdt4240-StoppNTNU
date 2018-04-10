@@ -5,7 +5,7 @@ package com.zombie.shooter.enums;
  */
 
 public enum EnemyType {
-    BASIC_ENEMY(1f, 1f, 25f, 1.5f, 0.5f);
+    BASIC_ENEMY(1f, 1f, 40f, 1.5f, 0.5f);
 
     private float width;
     private float height;
@@ -41,5 +41,12 @@ public enum EnemyType {
         return density;
     }
 
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
 }
 

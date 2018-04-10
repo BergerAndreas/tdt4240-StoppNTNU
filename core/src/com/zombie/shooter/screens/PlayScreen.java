@@ -31,6 +31,7 @@ import com.zombie.shooter.actors.buttons.FireButton;
 import com.zombie.shooter.enums.UserDataType;
 import com.zombie.shooter.utils.B2DConstants;
 import com.zombie.shooter.utils.B2DWorldUtils;
+import com.zombie.shooter.utils.utils;
 
 import java.util.ArrayList;
 
@@ -72,6 +73,11 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     //buttons
     private FireButton fireButton;
 
+    //Difficulty counter
+    private int difficulty;
+    private float gameTime;
+    private float prevVal;
+
     public PlayScreen(final ZombieShooter game) {
         super(game);
         this.gameCam = new OrthographicCamera();
@@ -92,6 +98,10 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         //Initialize texture
         background = new Texture("street.jpg");
         stage = new Stage(gamePort, app.batch);
+
+        this.difficulty = 10;
+        this.gameTime = 1.0f;
+        this.prevVal = 1.0f;
 
     }
 
@@ -116,6 +126,23 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
         //Handle updates here
         this.stage.act(delta);
+
+        this.gameTime += delta;
+
+        if(Math.floor(gameTime) != prevVal){
+            //Spawn Zombies
+            if(Math.floor(this.gameTime) % 9 == 0) {
+                spawnZombieWave();
+            }
+            prevVal += 1;
+
+            if(prevVal % 17 == 0) {
+                System.out.println("Difficulty increased");
+                difficulty += 5;
+            }
+        }
+
+
     }
 
     @Override
@@ -171,17 +198,19 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     //Place own methods here
     private void InitGame() {
         //Add stuff here
-        createEnemy();
+        spawnZombieWave();
         setUpRunner();
         setUpWall();
         setUpTouchControlAreas();
         setupInput();
+        setupEdges();
+
     }
 
     // Creates enemy
-    private void createEnemy() {
+    private void createEnemy(float x, float y) {
         //Initializes basic zombie
-        Enemy enemy = new BasicZombie(B2DWorldUtils.createEnemy(world));
+        Enemy enemy = new BasicZombie(B2DWorldUtils.createEnemy(world, x, y));
 
         //Adds enemy to current stage
         stage.addActor(enemy);
@@ -199,11 +228,37 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         stage.addActor(player);
     }
 
+    //Set up wall
     private void setUpWall() {
-        Wall wall = new Wall(B2DWorldUtils.createWall(world));
+        //Set up main wall
+        Wall wall = new Wall(B2DWorldUtils.createWall(
+                world,
+                B2DConstants.WALL_X,
+                B2DConstants.WALL_Y,
+                B2DConstants.WALL_WIDTH,
+                B2DConstants.WALL_HEIGHT
+        ));
         stage.addActor(wall);
     }
-  
+
+    private void setupEdges() {
+        float height = gameCam.viewportHeight / PPM;
+        float width = gameCam.viewportWidth / PPM;
+
+        Vector2[] v_roof = new Vector2[3];
+        v_roof[0] = new Vector2(0f , height-1);
+        v_roof[1] = new Vector2(width, height-1);
+        v_roof[2] = new Vector2(0f, height-1);
+
+        Vector2[] v_floor = new Vector2[3];
+        v_floor[0] = new Vector2(0f, 0f);
+        v_floor[1] = new Vector2(width, 0f);
+        v_floor[2] = new Vector2(0, 0f);
+
+        B2DWorldUtils.createChainShape(world, v_floor);
+        B2DWorldUtils.createChainShape(world, v_roof);
+    }
+
     private void setUpTouchControlAreas() {
         touchPoint = new Vector3();
         //TODO: Update this when constants available, also, draw them
@@ -307,6 +362,18 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     private void onFireButtonPressed() {
         //TODO: implement fire button logic
         System.out.println("Button pressed");
+    }
+
+    private void spawnZombieWave() {
+        int waveCount = utils.randInt(this.difficulty - 6, this.difficulty);
+
+        for (int i = 0; i < waveCount*10; i++) {
+            // Don't mind the magic space numbers
+            int spawnCordY = utils.randInt(5, (int) gameCam.viewportHeight - 80);
+            int spawnCordX = utils.randInt(30, 50);
+            createEnemy(spawnCordX, spawnCordY / PPM);
+        }
+
     }
 
 }
