@@ -336,6 +336,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         Body b = contact.getFixtureB().getBody();
         if (((B2DWorldUtils.bodyIsWall(b)) && (B2DWorldUtils.bodyIsEnemy(a)))) {
             //TODO: Stop animation when body hits wall
+            //System.out.println((BasicZombie) a.getUserData());
         }
     }
 

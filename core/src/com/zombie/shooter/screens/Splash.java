@@ -140,5 +140,7 @@ public class Splash extends AbstractScreen {
         resourceManager.createIdleAnimation();
         resourceManager.createBackground();
         resourceManager.createPlayerSprite();
+        //FIXME: Maybe remove resource initialized message
+        System.out.println("Resources initialized");
     }
 }
