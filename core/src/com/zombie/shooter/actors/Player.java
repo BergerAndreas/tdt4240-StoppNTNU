@@ -21,9 +21,9 @@ public class Player extends GameActor {
     private Sprite player;
 
 
-    public Player(Body body) {
+    public Player(Body body, Sprite player) {
         super(body);
-        player = new Sprite(new Texture("player.png"));
+        this.player = player;
         stateTime = 0f;
     }
 

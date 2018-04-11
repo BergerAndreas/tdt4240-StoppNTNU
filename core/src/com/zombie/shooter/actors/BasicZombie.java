@@ -20,19 +20,10 @@ public class BasicZombie extends Enemy {
     // A variable for tracking elapsed time for the animation
     float stateTime;
 
-    public BasicZombie(Body body) {
+    public BasicZombie(Body body, Animation<TextureRegion> animation) {
         super(body);
-        createIdleAnimation();
-    }
-
-    private void createIdleAnimation() {
-        //Opens textureAtlas containing enemy spritesheet information
-        atlas = new TextureAtlas(Gdx.files.internal("GreenGoblin/pack.atlas"));
-        //Fetches all sprites matchin keyword 'spoder'
-        runningAnimation =
-                new Animation<TextureRegion>(0.1f, atlas.findRegions("spoder"), Animation.PlayMode.LOOP);
-        //Initializes statetime for this animation
-        stateTime = 0f;
+        this.stateTime = 0;
+        this.runningAnimation = animation;
     }
 
     public void stopAnimation(){

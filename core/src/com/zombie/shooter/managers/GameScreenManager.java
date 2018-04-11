@@ -6,6 +6,7 @@ import com.zombie.shooter.screens.AbstractScreen;
 import com.zombie.shooter.screens.MenuScreen;
 import com.zombie.shooter.screens.PlayScreen;
 import com.zombie.shooter.screens.Splash;
+import com.zombie.shooter.utils.ResourceManager;
 
 import java.util.HashMap;
 
@@ -17,6 +18,7 @@ public class GameScreenManager {
 
     public final ZombieShooter app;
     private HashMap<STATE, AbstractScreen> gameScreen;
+    public ResourceManager resourceManager;
 
     //Add additional screens as they are added
     public enum STATE{
@@ -30,6 +32,8 @@ public class GameScreenManager {
 
     public GameScreenManager(final ZombieShooter app){
         this.app = app;
+        //Initializes resource manager
+        this.resourceManager = new ResourceManager();
 
         initGameStates();
 
@@ -41,9 +45,9 @@ public class GameScreenManager {
         this.gameScreen = new HashMap<STATE, AbstractScreen>();
 
         // Add new game states here
-        this.gameScreen.put(STATE.SINGLE_PLAYER, new PlayScreen(app));
-        this.gameScreen.put(STATE.MAIN_MENU, new MenuScreen(app));
-        this.gameScreen.put(STATE.SPLASH, new Splash(app));
+        this.gameScreen.put(STATE.SINGLE_PLAYER, new PlayScreen(app,resourceManager));
+        this.gameScreen.put(STATE.MAIN_MENU, new MenuScreen(app,resourceManager));
+        this.gameScreen.put(STATE.SPLASH, new Splash(app,resourceManager));
     }
 
     public void setScreen(STATE nextScreen) {

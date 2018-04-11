@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zombie.shooter.ZombieShooter;
 import com.zombie.shooter.managers.GameScreenManager;
+import com.zombie.shooter.utils.ResourceManager;
 
 import static com.zombie.shooter.utils.B2DConstants.PPM;
 
@@ -39,11 +40,12 @@ public class MenuScreen extends AbstractScreen {
     //Game Items put in world
 
     //Skins, textures and sprites
+    private ResourceManager resourceManager;
     private Skin skin;
     private TextureAtlas atlas;
     private Texture background;
 
-    public MenuScreen(final ZombieShooter game) {
+    public MenuScreen(final ZombieShooter game, ResourceManager resourceManager) {
         super(game);
         this.gameCam = new OrthographicCamera();
 
@@ -61,9 +63,10 @@ public class MenuScreen extends AbstractScreen {
         // Initializes box2d renderer
         b2dr = new Box2DDebugRenderer();
         //Initialize skins
+        this.resourceManager = resourceManager;
         atlas = new TextureAtlas(Gdx.files.internal("skins/neutralizer-ui.atlas"));
         skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
-        background = new Texture("street.jpg");
+        background = resourceManager.getBackground();
         stage = new Stage(gamePort, app.batch);
     }
 

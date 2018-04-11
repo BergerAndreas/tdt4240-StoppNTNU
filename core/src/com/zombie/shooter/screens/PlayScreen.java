@@ -2,12 +2,11 @@ package com.zombie.shooter.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -19,7 +18,6 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zombie.shooter.ZombieShooter;
@@ -32,6 +30,7 @@ import com.zombie.shooter.enums.UserDataType;
 import com.zombie.shooter.utils.AudioUtils;
 import com.zombie.shooter.utils.B2DConstants;
 import com.zombie.shooter.utils.B2DWorldUtils;
+import com.zombie.shooter.utils.ResourceManager;
 import com.zombie.shooter.utils.utils;
 
 import java.util.ArrayList;
@@ -57,15 +56,12 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     private World world;
     private Box2DDebugRenderer b2dr; //Debug mode to make our life easy
 
-    //Skins, textures and sprites
-    private Texture background;
-
     //Add player
     private Player player;
 
     //Add walls
     private ArrayList<Wall> walls;
-  
+
     //Touchinput
     private Vector3 touchPoint;
     private Rectangle playerLane;
@@ -79,8 +75,13 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     private float gameTime;
     private float prevVal;
 
+    //Textures, plz use resourcemanager
+    private ResourceManager resourceManager;
+    private Texture background;
+    private Animation<TextureRegion> basicEnemyAnimation;
+    private Sprite playerSprite;
 
-    public PlayScreen(final ZombieShooter game) {
+    public PlayScreen(final ZombieShooter game, ResourceManager resourceManager) {
         super(game);
         this.gameCam = new OrthographicCamera();
 
@@ -98,7 +99,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         // Initializes box2d renderer
         b2dr = new Box2DDebugRenderer();
         //Initialize texture
-        background = new Texture("street.jpg");
+        this.resourceManager = resourceManager;
         stage = new Stage(gamePort, app.batch);
         AudioUtils.getInstance().init();
 
@@ -132,14 +133,14 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
         this.gameTime += delta;
 
-        if(Math.floor(gameTime) != prevVal){
+        if (Math.floor(gameTime) != prevVal) {
             //Spawn Zombies
-            if(Math.floor(this.gameTime) % 9 == 0) {
+            if (Math.floor(this.gameTime) % 9 == 0) {
                 spawnZombieWave();
             }
             prevVal += 1;
 
-            if(prevVal % 17 == 0) {
+            if (prevVal % 17 == 0) {
                 System.out.println("Difficulty increased");
                 difficulty += 5;
             }
@@ -201,6 +202,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     //Place own methods here
     private void InitGame() {
         //Add stuff here
+        setupResources();
         spawnZombieWave();
         setUpRunner();
         setUpWall();
@@ -210,10 +212,16 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
     }
 
+    private void setupResources() {
+        background = resourceManager.getBackground();
+        basicEnemyAnimation = resourceManager.getRunningAnimation();
+        playerSprite = resourceManager.getPlayerSprite();
+    }
+
     // Creates enemy
     private void createEnemy(float x, float y) {
         //Initializes basic zombie
-        Enemy enemy = new BasicZombie(B2DWorldUtils.createEnemy(world, x, y));
+        Enemy enemy = new BasicZombie(B2DWorldUtils.createEnemy(world, x, y), basicEnemyAnimation);
 
         //Adds enemy to current stage
         stage.addActor(enemy);
@@ -225,7 +233,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         if (player != null) {
             player.remove();
         }
-        player = new Player(B2DWorldUtils.createRunner(world));
+        player = new Player(B2DWorldUtils.createRunner(world), playerSprite);
 
         //adds enemy to current stage
         stage.addActor(player);
@@ -249,9 +257,9 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         float width = gameCam.viewportWidth / PPM;
 
         Vector2[] v_roof = new Vector2[3];
-        v_roof[0] = new Vector2(0f , height-1);
-        v_roof[1] = new Vector2(width, height-1);
-        v_roof[2] = new Vector2(0f, height-1);
+        v_roof[0] = new Vector2(0f, height - 1);
+        v_roof[1] = new Vector2(width, height - 1);
+        v_roof[2] = new Vector2(0f, height - 1);
 
         Vector2[] v_floor = new Vector2[3];
         v_floor[0] = new Vector2(0f, 0f);
@@ -265,7 +273,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     private void setUpTouchControlAreas() {
         touchPoint = new Vector3();
         //TODO: Update this when constants available, also, draw them
-        playerLane = new Rectangle(0, 0, 7*B2DConstants.PPM,
+        playerLane = new Rectangle(0, 0, 7 * B2DConstants.PPM,
                 this.stage.getCamera().viewportHeight);
         //Creates bounds for firebutton
         fireBounds = new Rectangle(this.stage.getCamera().viewportWidth - 200, 0,
@@ -303,15 +311,16 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
                 // your touch up code here
                 return true; // return true to indicate the event was handled
             }
+
             @Override
-            public boolean touchDragged(int x, int y, int pointer){
+            public boolean touchDragged(int x, int y, int pointer) {
                 Vector2 tmpVec2 = new Vector2();
                 translateScreenToWorldCoordinates(x, y);
                 stage.getViewport().unproject(tmpVec2.set(x, y));
 
-                if(playerLaneTouched(tmpVec2.x, tmpVec2.y)){
+                if (playerLaneTouched(tmpVec2.x, tmpVec2.y)) {
 
-                    player.setTransform(new Vector2(player.getUserData().getRunningPosition().x,tmpVec2.y/B2DConstants.PPM), 0);
+                    player.setTransform(new Vector2(player.getUserData().getRunningPosition().x, tmpVec2.y / B2DConstants.PPM), 0);
                 }
                 return true;
             }
@@ -328,10 +337,11 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     public void beginContact(Contact contact) {
         Body a = contact.getFixtureA().getBody();
         Body b = contact.getFixtureB().getBody();
-        if(((B2DWorldUtils.bodyIsWall(b))&&(B2DWorldUtils.bodyIsEnemy(a)))){
+        if (((B2DWorldUtils.bodyIsWall(b)) && (B2DWorldUtils.bodyIsEnemy(a)))) {
             //TODO: Stop animation when body hits wall
         }
     }
+
 
     @Override
     public void endContact(Contact contact) {
