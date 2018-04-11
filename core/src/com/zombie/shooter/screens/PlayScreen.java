@@ -6,8 +6,10 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -16,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -28,12 +31,15 @@ import com.zombie.shooter.actors.Enemy;
 import com.zombie.shooter.actors.Player;
 import com.zombie.shooter.actors.Wall;
 import com.zombie.shooter.actors.buttons.FireButton;
+import com.zombie.shooter.box2d.EnemyUserData;
 import com.zombie.shooter.enums.UserDataType;
 import com.zombie.shooter.utils.B2DConstants;
 import com.zombie.shooter.utils.B2DWorldUtils;
+import com.zombie.shooter.utils.ResourceManager;
 import com.zombie.shooter.utils.utils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static com.zombie.shooter.utils.B2DConstants.PPM;
 
@@ -77,6 +83,9 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     private int difficulty;
     private float gameTime;
     private float prevVal;
+
+    //Textures, plz use resourcemanager
+    Animation<TextureRegion> basicEnemyAnimation;
 
     public PlayScreen(final ZombieShooter game) {
         super(game);
@@ -198,6 +207,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     //Place own methods here
     private void InitGame() {
         //Add stuff here
+        setupResources();
         spawnZombieWave();
         setUpRunner();
         setUpWall();
@@ -207,10 +217,14 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
     }
 
+    private void setupResources() {
+        basicEnemyAnimation = ResourceManager.createIdleAnimation();
+    }
+
     // Creates enemy
     private void createEnemy(float x, float y) {
         //Initializes basic zombie
-        Enemy enemy = new BasicZombie(B2DWorldUtils.createEnemy(world, x, y));
+        Enemy enemy = new BasicZombie(B2DWorldUtils.createEnemy(world, x, y), basicEnemyAnimation);
 
         //Adds enemy to current stage
         stage.addActor(enemy);
@@ -329,6 +343,8 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
             //TODO: Stop animation when body hits wall
         }
     }
+
+
 
     @Override
     public void endContact(Contact contact) {
