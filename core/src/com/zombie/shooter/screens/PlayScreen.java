@@ -26,6 +26,8 @@ import com.zombie.shooter.actors.Enemy;
 import com.zombie.shooter.actors.Player;
 import com.zombie.shooter.actors.Wall;
 import com.zombie.shooter.actors.buttons.FireButton;
+import com.zombie.shooter.enums.UserDataType;
+import com.zombie.shooter.utils.AudioUtils;
 import com.zombie.shooter.utils.B2DConstants;
 import com.zombie.shooter.utils.B2DWorldUtils;
 import com.zombie.shooter.utils.ResourceManager;
@@ -99,6 +101,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         //Initialize texture
         this.resourceManager = resourceManager;
         stage = new Stage(gamePort, app.batch);
+        AudioUtils.getInstance().init();
 
         this.difficulty = 10;
         this.gameTime = 1.0f;
