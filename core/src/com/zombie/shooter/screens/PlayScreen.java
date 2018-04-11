@@ -29,6 +29,7 @@ import com.zombie.shooter.actors.Player;
 import com.zombie.shooter.actors.Wall;
 import com.zombie.shooter.actors.buttons.FireButton;
 import com.zombie.shooter.enums.UserDataType;
+import com.zombie.shooter.utils.AudioUtils;
 import com.zombie.shooter.utils.B2DConstants;
 import com.zombie.shooter.utils.B2DWorldUtils;
 import com.zombie.shooter.utils.utils;
@@ -78,6 +79,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     private float gameTime;
     private float prevVal;
 
+
     public PlayScreen(final ZombieShooter game) {
         super(game);
         this.gameCam = new OrthographicCamera();
@@ -98,6 +100,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         //Initialize texture
         background = new Texture("street.jpg");
         stage = new Stage(gamePort, app.batch);
+        AudioUtils.getInstance().init();
 
         this.difficulty = 10;
         this.gameTime = 1.0f;
