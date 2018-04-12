@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.zombie.shooter.managers.GameScreenManager;
 
+import de.golfgl.gdxgamesvcs.IGameServiceClient;
+
 public class ZombieShooter extends Game {
 
 	public static String APP_TITLE = "Ugly Z";
@@ -19,6 +21,8 @@ public class ZombieShooter extends Game {
 	public static int APP_DESKTOP_WIDTH = 1024;
 	public static int APP_DESKTOP_HEIGHT = 576;
 	public static int APP_FPS = 60; //Cinematic?!??!
+
+	public IGameServiceClient gsClient;
 
 
 
