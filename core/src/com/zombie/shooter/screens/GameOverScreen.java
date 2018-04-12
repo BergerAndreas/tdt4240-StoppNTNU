@@ -1,9 +1,9 @@
 package com.zombie.shooter.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -23,10 +23,10 @@ import com.zombie.shooter.utils.ResourceManager;
 import static com.zombie.shooter.utils.B2DConstants.PPM;
 
 /**
- * Created by Torstein on 3/11/2018.
+ * Created by Erikkvo on 12-Apr-18.
  */
 
-public class MenuScreen extends AbstractScreen {
+public class GameOverScreen extends AbstractScreen {
 
     // Cameras and viewport
     private OrthographicCamera gameCam;
@@ -45,8 +45,10 @@ public class MenuScreen extends AbstractScreen {
     private TextureAtlas atlas;
     private Texture background;
 
-    public MenuScreen(final ZombieShooter game, ResourceManager resourceManager) {
+
+    public GameOverScreen(final ZombieShooter game, ResourceManager resourceManager) {
         super(game);
+
         this.gameCam = new OrthographicCamera();
 
         // Initializes a new viewport
@@ -66,33 +68,8 @@ public class MenuScreen extends AbstractScreen {
         this.resourceManager = resourceManager;
         atlas = new TextureAtlas(Gdx.files.internal("skins/neutralizer-ui.atlas"));
         skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
-        background = resourceManager.getBackground();
+        background = this.resourceManager.getBackground();
         stage = new Stage(gamePort, app.batch);
-    }
-
-
-    @Override
-    public void show() {
-        // Initialize new world for this screen
-        world = new World(new Vector2(0f, 0f), false);
-        app.shapeBatch.setProjectionMatrix(gameCam.combined);
-        app.batch.setProjectionMatrix(gameCam.combined);
-
-        // Enables menu to control input
-        Gdx.input.setInputProcessor(this.stage);
-        InitMenu();
-
-    }
-
-    @Override
-    public void update(float delta) {
-        // Move world forward
-        // Why 6 and 2? I don't know
-        world.step(1f / ZombieShooter.APP_FPS, 6, 2);
-
-        //Handle updates here
-
-        this.stage.act(delta);
     }
 
     @Override
@@ -100,7 +77,7 @@ public class MenuScreen extends AbstractScreen {
         super.render(delta);
         b2dr.render(world, gameCam.combined.cpy().scl(PPM));
 
-        //Sets background of menuscreen
+        //Sets background of GameOverScreen
         app.batch.begin();
 //        app.batch.draw(background, 0, 0, ZombieShooter.APP_DESKTOP_WIDTH,
 //                ZombieShooter.APP_DESKTOP_HEIGHT);
@@ -109,6 +86,26 @@ public class MenuScreen extends AbstractScreen {
         //Make stage show stuff
         this.stage.act();
         this.stage.draw();
+    }
+
+    @Override
+    public void update(float delta) {
+        // Move world forward
+        world.step(1f / ZombieShooter.APP_FPS, 6, 2);
+        //Handle updates here
+        this.stage.act(delta);
+    }
+
+    @Override
+    public void show() {
+        // Set up new world for GameOverScreen
+        world = new World(new Vector2(0f, 0f), false);
+        app.shapeBatch.setProjectionMatrix(gameCam.combined);
+        app.batch.setProjectionMatrix(gameCam.combined);
+
+        // Control inputs
+        Gdx.input.setInputProcessor(this.stage);
+        InitMenu();
     }
 
     @Override
@@ -156,41 +153,40 @@ public class MenuScreen extends AbstractScreen {
         mainTable.center();
         //Create buttons
 
-        TextButton singleplayerButton = new TextButton("Singleplayer", skin);
-        TextButton multiplayerButton = new TextButton("Multiplayer", skin);
-        TextButton optionsButton = new TextButton("Options", skin);
-        TextButton exitButton = new TextButton("Exit", skin);
+        TextButton restartButton = new TextButton("Restart", skin);
+//        TextButton HighscoresButton = new TextButton("Highscores", skin);
+        TextButton QuitGameButton = new TextButton("Quit Game", skin);
 
 
         //Add listeners to buttons
-        singleplayerButton.addListener(new ClickListener() {
+        restartButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+//                TODO change state to whatever the state was prior to "restart press"
+                app.gsm.resetPlayScreen();
                 app.gsm.setScreen(GameScreenManager.STATE.SINGLE_PLAYER);
                 //((Game)Gdx.app.getApplicationListener()).setScreen(new PlayScreen(app));
             }
         });
-        //TODO: Add multiplayer listener
-        exitButton.addListener(new ClickListener() {
+//        Quit Game takes player to main menu screen
+        QuitGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                app.gsm.resetPlayScreen();
+                app.gsm.setScreen(GameScreenManager.STATE.MAIN_MENU);
             }
         });
 
 
         //Add buttons to table
-        mainTable.add(singleplayerButton);
+        mainTable.add(restartButton);
         mainTable.row();
-        mainTable.add(multiplayerButton);
-        mainTable.row();
-        mainTable.add(optionsButton);
-        mainTable.row();
-        mainTable.add(exitButton);
+//        mainTable.add(highscoresButton);
+//        mainTable.row();
+        mainTable.add(QuitGameButton);
 
         // Adds maintable to stage
         stage.addActor(mainTable);
-
     }
 
 }

@@ -3,6 +3,7 @@ package com.zombie.shooter.managers;
 import com.badlogic.gdx.Screen;
 import com.zombie.shooter.ZombieShooter;
 import com.zombie.shooter.screens.AbstractScreen;
+import com.zombie.shooter.screens.GameOverScreen;
 import com.zombie.shooter.screens.MenuScreen;
 import com.zombie.shooter.screens.PlayScreen;
 import com.zombie.shooter.screens.Splash;
@@ -27,7 +28,8 @@ public class GameScreenManager {
         SINGLE_PLAYER,
         MULTI_PLAYER_LOBBY,
         MULTI_PLAYER,
-        SETTINGS
+        SETTINGS,
+        GAME_OVER
     }
 
     public GameScreenManager(final ZombieShooter app){
@@ -48,10 +50,16 @@ public class GameScreenManager {
         this.gameScreen.put(STATE.SINGLE_PLAYER, new PlayScreen(app,resourceManager));
         this.gameScreen.put(STATE.MAIN_MENU, new MenuScreen(app,resourceManager));
         this.gameScreen.put(STATE.SPLASH, new Splash(app,resourceManager));
+        this.gameScreen.put(STATE.GAME_OVER, new GameOverScreen(app,resourceManager));
     }
 
     public void setScreen(STATE nextScreen) {
         app.setScreen(gameScreen.get(nextScreen));
+    }
+
+    public void resetPlayScreen(){
+//        Ignore warning, this shit bang
+        this.gameScreen.replace(STATE.SINGLE_PLAYER, new PlayScreen(app, resourceManager));
     }
 
     public void dispose(){

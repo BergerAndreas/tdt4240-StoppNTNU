@@ -2,6 +2,7 @@ package com.zombie.shooter.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -30,6 +31,7 @@ import com.zombie.shooter.actors.Wall;
 import com.zombie.shooter.actors.buttons.FireButton;
 import com.zombie.shooter.box2d.WallUserData;
 import com.zombie.shooter.enums.UserDataType;
+import com.zombie.shooter.managers.GameScreenManager;
 import com.zombie.shooter.utils.AudioUtils;
 import com.zombie.shooter.utils.B2DConstants;
 import com.zombie.shooter.utils.B2DWorldUtils;
@@ -154,6 +156,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         if (mainWall.getUserData().getWallHealth() <= 0) {
             //TODO: Add game over
             System.out.println("Game over");
+            app.gsm.setScreen(GameScreenManager.STATE.GAME_OVER);
         }
 
 
