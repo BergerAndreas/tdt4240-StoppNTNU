@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.zombie.shooter.managers.GameScreenManager;
+import com.zombie.shooter.utils.AudioUtils;
 
 public class ZombieShooter extends Game {
 
@@ -37,6 +38,8 @@ public class ZombieShooter extends Game {
 
 		assets = new AssetManager();
 		gsm = new GameScreenManager(this);
+//		Initialize audio
+		AudioUtils.getInstance().init();
 
 	}
 

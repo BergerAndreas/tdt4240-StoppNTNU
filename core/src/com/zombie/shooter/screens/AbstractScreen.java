@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.zombie.shooter.ZombieShooter;
+import com.zombie.shooter.utils.AudioUtils;
 
 /**
  *  Created by opium on 09.03.18.
