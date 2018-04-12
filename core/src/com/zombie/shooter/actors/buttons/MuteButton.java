@@ -26,9 +26,9 @@ public class MuteButton extends GameButton {
     @Override
     protected String getTexturePath() {
         if(AudioUtils.getInstance().getIsMuted()){
-            return "buttons/unmuted.png";
+            return "buttons/muted.png";
         }
-        return "buttons/muted.png";
+        return "buttons/unmuted.png";
     }
 
     //Method called on listener when touched
