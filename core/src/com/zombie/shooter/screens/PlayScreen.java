@@ -106,6 +106,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         //Initialize texture
         this.resourceManager = resourceManager;
         stage = new Stage(gamePort, app.batch);
+        //Initialize audio
         AudioUtils.getInstance().init();
 
         this.difficulty = 10;
@@ -149,6 +150,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
                 difficulty += 5;
             }
         }
+        //Game over logic
         if (mainWall.getUserData().getWallHealth() <= 0) {
             //TODO: Add game over
             System.out.println("Game over");
@@ -173,38 +175,6 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         //Make stage show stuff
         this.stage.act();
         this.stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        // Ensures resizing works properly
-        this.gamePort.update(width, height);
-        this.gameCam.position.set(this.gameCam.viewportWidth / 2, this.gameCam.viewportHeight / 2, 0);
-        this.gameCam.update();
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-        super.dispose();
-        this.world.dispose();
-        this.background.dispose();
-
     }
 
     //Place own methods here
@@ -291,12 +261,6 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         //Adds firebutton to stage
         this.stage.addActor(fireButton);
     }
-
-    private boolean playerLaneTouched(float x, float y) {
-        return playerLane.contains(x, y);
-    }
-
-
     private void setupInput() {
         // Enables playscreen to control input
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -327,7 +291,6 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
                 stage.getViewport().unproject(tmpVec2.set(x, y));
 
                 if (playerLaneTouched(tmpVec2.x, tmpVec2.y)) {
-
                     player.setTransform(new Vector2(player.getUserData().getRunningPosition().x, tmpVec2.y / B2DConstants.PPM), 0);
                 }
                 return true;
@@ -335,10 +298,11 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         });
     }
 
-    //Helper function to get actual world coordinates used for touch input
-    private void translateScreenToWorldCoordinates(int x, int y) {
-        this.stage.getCamera().unproject(touchPoint.set(x, y, 0));
+    private boolean playerLaneTouched(float x, float y) {
+        return playerLane.contains(x, y);
     }
+
+
 
     //Contact listeners
     @Override
@@ -351,22 +315,6 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
             System.out.println(mainWall.getUserData().getWallHealth());
 
         }
-    }
-
-
-    @Override
-    public void endContact(Contact contact) {
-
-    }
-
-    @Override
-    public void preSolve(Contact contact, Manifold oldManifold) {
-
-    }
-
-    @Override
-    public void postSolve(Contact contact, ContactImpulse impulse) {
-
     }
 
     // Button listeners
@@ -397,6 +345,64 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
             int spawnCordX = utils.randInt(30, 50);
             createEnemy(spawnCordX, spawnCordY / PPM);
         }
+
+    }
+
+    //Helper function to get actual world coordinates used for touch input
+    private void translateScreenToWorldCoordinates(int x, int y) {
+        this.stage.getCamera().unproject(touchPoint.set(x, y, 0));
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        // Ensures resizing works properly
+        this.gamePort.update(width, height);
+        this.gameCam.position.set(this.gameCam.viewportWidth / 2, this.gameCam.viewportHeight / 2, 0);
+        this.gameCam.update();
+    }
+
+    @Override
+    public void dispose() {
+
+        super.dispose();
+        this.world.dispose();
+        this.background.dispose();
+
+    }
+
+
+    //Unused methods, but necessary because inheritance
+
+    //AbstractScreen
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    //Box2D
+    @Override
+    public void endContact(Contact contact) {
+
+    }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {
+
+    }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) {
 
     }
 
