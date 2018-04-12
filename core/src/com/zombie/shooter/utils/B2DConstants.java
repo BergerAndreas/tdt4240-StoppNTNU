@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class B2DConstants {
 
+    public static final float DECREASE_WALLHEALTH = 10;
+
     private B2DConstants() {}
 
     public static float PPM = 32f;
@@ -34,6 +36,6 @@ public class B2DConstants {
     public static final float WALL_HEIGHT = 60f;
     public static final float WALL_WIDTH = 2f;
     public static final float WALL_DENSITY = 60f;
-    public static final float WALL_HEALTH = 500f;  //Very random number
+    public static final float WALL_HEALTH = 20f;  //Very random number
 
 }

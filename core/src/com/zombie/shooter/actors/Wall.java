@@ -13,22 +13,13 @@ public class Wall extends GameActor {
 
     private float stateTime;
     private Sprite wallSprite;
-    private float wallHealth;
 
-    public Wall(Body body){
+    public Wall(Body body) {
         super(body);
         wallSprite = new Sprite(new Texture("wall.jpg"));
         stateTime = 0f;
-        wallHealth = B2DConstants.WALL_HEALTH;
     }
 
-    public float getWallHealth(){
-        return this.wallHealth;
-    }
-
-    public void setWallHealth(float newHealth){
-        this.wallHealth = newHealth;
-    }
 
     @Override
     public WallUserData getUserData() {
@@ -47,12 +38,9 @@ public class Wall extends GameActor {
 
 
     //TODO: ADD hit logic
-    public void wallHit(){
+    public void wallHit() {
 
     }
-
-
-
 
 
 }

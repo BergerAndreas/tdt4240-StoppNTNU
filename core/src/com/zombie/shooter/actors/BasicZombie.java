@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.zombie.shooter.box2d.EnemyUserData;
 
 /**
  * Created by Torstein on 4/5/2018.
@@ -46,5 +47,9 @@ public class BasicZombie extends Enemy {
         //Draws frame
         batch.draw(currentFrame, (screenRectangle.x - (screenRectangle.width * 0.1f)),
                 screenRectangle.y, screenRectangle.width * 1.2f, screenRectangle.height * 1.1f);
+    }
+    @Override
+    public EnemyUserData getUserData() {
+        return (EnemyUserData) userData;
     }
 }

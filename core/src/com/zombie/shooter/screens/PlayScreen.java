@@ -15,6 +15,8 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -26,6 +28,7 @@ import com.zombie.shooter.actors.Enemy;
 import com.zombie.shooter.actors.Player;
 import com.zombie.shooter.actors.Wall;
 import com.zombie.shooter.actors.buttons.FireButton;
+import com.zombie.shooter.box2d.WallUserData;
 import com.zombie.shooter.enums.UserDataType;
 import com.zombie.shooter.utils.AudioUtils;
 import com.zombie.shooter.utils.B2DConstants;
@@ -61,6 +64,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
     //Add walls
     private ArrayList<Wall> walls;
+    private Wall mainWall;
 
     //Touchinput
     private Vector3 touchPoint;
@@ -80,6 +84,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     private Texture background;
     private Animation<TextureRegion> basicEnemyAnimation;
     private Sprite playerSprite;
+
 
     public PlayScreen(final ZombieShooter game, ResourceManager resourceManager) {
         super(game);
@@ -106,7 +111,6 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         this.difficulty = 10;
         this.gameTime = 1.0f;
         this.prevVal = 1.0f;
-
     }
 
     @Override
@@ -144,6 +148,10 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
                 System.out.println("Difficulty increased");
                 difficulty += 5;
             }
+        }
+        if (mainWall.getUserData().getWallHealth() <= 0) {
+            //TODO: Add game over
+            System.out.println("Game over");
         }
 
 
@@ -242,14 +250,14 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     //Set up wall
     private void setUpWall() {
         //Set up main wall
-        Wall wall = new Wall(B2DWorldUtils.createWall(
+        mainWall = new Wall(B2DWorldUtils.createWall(
                 world,
                 B2DConstants.WALL_X,
                 B2DConstants.WALL_Y,
                 B2DConstants.WALL_WIDTH,
                 B2DConstants.WALL_HEIGHT
         ));
-        stage.addActor(wall);
+        stage.addActor(mainWall);
     }
 
     private void setupEdges() {
@@ -338,8 +346,10 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         Body a = contact.getFixtureA().getBody();
         Body b = contact.getFixtureB().getBody();
         if (((B2DWorldUtils.bodyIsWall(b)) && (B2DWorldUtils.bodyIsEnemy(a)))) {
-            //TODO: Stop animation when body hits wall
-            //System.out.println((BasicZombie) a.getUserData());
+            //TODO: Make the wall health decease continuously
+            mainWall.getUserData().decreaseHealth();
+            System.out.println(mainWall.getUserData().getWallHealth());
+
         }
     }
 
