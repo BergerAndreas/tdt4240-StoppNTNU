@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.zombie.shooter.actors.bullets.Bullet;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -28,6 +27,7 @@ public class Weapon {
                   Vector2 bulletSpeed,
                   Vector2 bulletDirection) {
 
+        this.clip = new LinkedList<Bullet>();
         this.weaponName = weaponName;
         this.texture = new Texture(texturePath);
         this.clipSize = clipSize;
@@ -82,7 +82,6 @@ public class Weapon {
     public int getFireRate() {
         return fireRate;
     }
-
 
     public Vector2 getBulletDirection() {
         return bulletDirection;
