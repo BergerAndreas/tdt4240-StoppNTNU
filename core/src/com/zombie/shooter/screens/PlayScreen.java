@@ -121,8 +121,14 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         world.step(1f / ZombieShooter.APP_FPS, 6, 2);
 
         //Handle updates here
-        timer += delta;
 
+        //Stops timer when a powerup is on the field
+        if (isClicked) {
+            timer += delta;
+        }
+
+        //Spawns powerups in random intervals
+        //TODO: Change spawn area and placeholder image
         if (timer > spawnDelay && isClicked) {
             instakillBounds = new Rectangle(randInt(100,(int) this.stage.getCamera().viewportWidth - 100), randInt(100, (int) this.stage.getCamera().viewportHeight - 100),
                     this.stage.getCamera().viewportWidth / 8, this.stage.getCamera().viewportHeight / 6);
@@ -355,7 +361,6 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         //TODO: activate instakill effect for a set duration
         System.out.println("Instakill activated");
         instakillButton.remove();
-
         isClicked = true;
     }
 }
