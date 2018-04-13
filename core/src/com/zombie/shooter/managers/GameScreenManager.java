@@ -4,6 +4,7 @@ import com.badlogic.gdx.Screen;
 import com.zombie.shooter.ZombieShooter;
 import com.zombie.shooter.screens.AbstractScreen;
 import com.zombie.shooter.screens.GameOverScreen;
+import com.zombie.shooter.screens.HighscoresScreen;
 import com.zombie.shooter.screens.MenuScreen;
 import com.zombie.shooter.screens.PlayScreen;
 import com.zombie.shooter.screens.Splash;
@@ -29,7 +30,8 @@ public class GameScreenManager {
         MULTI_PLAYER_LOBBY,
         MULTI_PLAYER,
         SETTINGS,
-        GAME_OVER
+        GAME_OVER,
+        HIGHSCORES
     }
 
     public GameScreenManager(final ZombieShooter app){
@@ -51,6 +53,7 @@ public class GameScreenManager {
         this.gameScreen.put(STATE.MAIN_MENU, new MenuScreen(app,resourceManager));
         this.gameScreen.put(STATE.SPLASH, new Splash(app,resourceManager));
         this.gameScreen.put(STATE.GAME_OVER, new GameOverScreen(app,resourceManager));
+        this.gameScreen.put(STATE.HIGHSCORES, new HighscoresScreen(app,resourceManager));
     }
 
     public void setScreen(STATE nextScreen) {
