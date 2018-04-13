@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.zombie.shooter.actors.buttons.MuteButton;
 
 
 public class AudioUtils {
@@ -15,6 +16,7 @@ public class AudioUtils {
 
     private static final String MUSIC_ON_PREFERENCE = "music_on";
     private static final String SOUND_ON_PREFERENCE = "sound_on";
+    private boolean isMuted;
 
     private AudioUtils() {
     }
@@ -31,6 +33,7 @@ public class AudioUtils {
     public void init() {
         music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
         music.setLooping(true);
+        this.isMuted = false;
         playMusic();
     }
 
@@ -39,9 +42,27 @@ public class AudioUtils {
     }
 
     public void playMusic() {
-        music.play();
+        if (!music.isPlaying()){
+            music.play();
+        }
     }
 
+    public boolean getIsMuted(){
+        return this.isMuted;
+    }
+
+    public void toggleMuteMusic(){
+        if(! this.isMuted){
+            music.setVolume(0);
+            this.isMuted = true;
+            System.out.println("Mute pressed");
+        }else{
+            music.setVolume(100);
+            this.isMuted = false;
+            System.out.println("Unmute pressed");
+        }
+
+    }
 
     public static void dispose() {
         music.dispose();
