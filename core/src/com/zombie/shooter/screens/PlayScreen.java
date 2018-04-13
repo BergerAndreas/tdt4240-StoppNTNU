@@ -199,6 +199,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         setUpTouchControlAreas();
         setupInput();
         spawnDelay = randInt(0,10);
+        instakillButton = new InstaKill(new Rectangle(0, 0, 0, 0), new GameInstaKillListener());
     }
 
     // Creates enemy
