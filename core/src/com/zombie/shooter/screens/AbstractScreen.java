@@ -42,4 +42,7 @@ public abstract class AbstractScreen implements Screen{
 
     }
 
+    public abstract void draw();
+
+
 }

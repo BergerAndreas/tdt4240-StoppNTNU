@@ -5,10 +5,12 @@ package com.zombie.shooter.screens;
  * Created by håvar opium on 09.03.18.
  */
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.zombie.shooter.ZombieShooter;
 import com.zombie.shooter.actors.Bullet;
 import com.zombie.shooter.actors.Enemy;
 import com.zombie.shooter.actors.Player;
@@ -87,6 +89,18 @@ public class PlayScreen extends AbstractScreen{
                 }
             }
         }
+
+    }
+
+    public void draw() {
+        sb.setProjectionMatrix(ZombieShooter.cam.combined);
+        sr.setProjectionMatrix(ZombieShooter.cam.combined);
+
+        // draw enemies
+        for(int i = 0; i < enemies.size(); i++) {
+            enemies.get(i).draw(sb);
+        }
+
 
     }
 

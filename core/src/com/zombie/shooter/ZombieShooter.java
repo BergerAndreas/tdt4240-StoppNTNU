@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -20,7 +21,10 @@ public class ZombieShooter extends Game {
 	public static int APP_DESKTOP_WIDTH = 1024;
 	public static int APP_DESKTOP_HEIGHT = 576;
 	public static int APP_FPS = 60; //Cinematic?!??!
+	public static OrthographicCamera cam;
 
+	public static int WIDTH;
+	public static int HEIGHT;
 
 
 	// Mangers
@@ -41,11 +45,26 @@ public class ZombieShooter extends Game {
 //		Initialize audio
 		AudioUtils.getInstance().init();
 
+		WIDTH = Gdx.graphics.getWidth();
+		HEIGHT = Gdx.graphics.getHeight();
+
+		cam = new OrthographicCamera(WIDTH, HEIGHT);
+		cam.translate(WIDTH / 2, HEIGHT / 2);
+		cam.update();
+
+
 	}
 
 	@Override
 	public void render () {
 		super.render();
+
+		// clear screen to black
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		gsm.update(Gdx.graphics.getDeltaTime());
+		gsm.draw();
 
 		if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
 			Gdx.app.exit();
