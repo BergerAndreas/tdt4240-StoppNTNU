@@ -1,5 +1,6 @@
 package com.zombie.shooter.screens;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -29,6 +30,7 @@ import com.zombie.shooter.actors.Enemy;
 import com.zombie.shooter.actors.Player;
 import com.zombie.shooter.actors.Wall;
 import com.zombie.shooter.actors.buttons.FireButton;
+import com.zombie.shooter.actors.buttons.MuteButton;
 import com.zombie.shooter.box2d.WallUserData;
 import com.zombie.shooter.enums.UserDataType;
 import com.zombie.shooter.managers.GameScreenManager;
@@ -72,9 +74,11 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     private Vector3 touchPoint;
     private Rectangle playerLane;
     private Rectangle fireBounds;
+    private Rectangle muteBounds;
 
     //buttons
     private FireButton fireButton;
+    private MuteButton muteButton;
 
     //Difficulty counter
     private int difficulty;
@@ -108,8 +112,6 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         //Initialize texture
         this.resourceManager = resourceManager;
         stage = new Stage(gamePort, app.batch);
-        //Initialize audio
-        AudioUtils.getInstance().init();
 
         this.difficulty = 10;
         this.gameTime = 1.0f;
@@ -256,13 +258,17 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         //TODO: Update this when constants available, also, draw them
         playerLane = new Rectangle(0, 0, 7 * B2DConstants.PPM,
                 this.stage.getCamera().viewportHeight);
-        //Creates bounds for firebutton
+        //Create bounds for buttons
         fireBounds = new Rectangle(this.stage.getCamera().viewportWidth - 200, 0,
                 this.stage.getCamera().viewportWidth / 8, this.stage.getCamera().viewportHeight / 6);
-        //Creates a new firebutton with above bounds
+        muteBounds = new Rectangle(this.stage.getCamera().viewportWidth - 100, this.stage.getCamera().viewportHeight - 75,
+                this.stage.getCamera().viewportWidth / 16, this.stage.getCamera().viewportHeight / 16);
+        //Create buttons with above bounds
         fireButton = new FireButton(fireBounds, new GameFireButtonListener());
-        //Adds firebutton to stage
+        muteButton = new MuteButton(muteBounds, new GameMuteButtonListener());
+        //Add buttons to stage
         this.stage.addActor(fireButton);
+        this.stage.addActor(muteButton);
     }
     private void setupInput() {
         // Enables playscreen to control input
@@ -276,6 +282,9 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
                 // Passes touch control to button observer thingy ¯\_(ツ)_/¯
                 if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+                    stage.touchDown(x, y, pointer, button);
+                }
+                if (muteButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
                     stage.touchDown(x, y, pointer, button);
                 }
                 return true;
@@ -336,8 +345,26 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     //Method called when FireButton pressed
     private void onFireButtonPressed() {
         //TODO: implement fire button logic
-        System.out.println("Button pressed");
+        System.out.println("FireButton pressed");
     }
+
+    //Mutebutton listener class
+    private class GameMuteButtonListener implements MuteButton.MuteButtonListener {
+
+        // Adds observer
+        @Override
+        public void onMute() {
+            //Calls this method when button is pressed
+            onMuteButtonPressed();
+        }
+    }
+
+    //Method called when FireButton pressed
+    private void onMuteButtonPressed() {
+        //TODO: implement mute button logic
+        AudioUtils.getInstance().toggleMuteMusic();
+    }
+
 
     private void spawnZombieWave() {
         int waveCount = utils.randInt(this.difficulty - 6, this.difficulty);
