@@ -10,16 +10,18 @@ import com.zombie.shooter.utils.B2DConstants;
 
 public class PlayerUserData extends UserData {
     private final Vector2 runningPosition = new Vector2(B2DConstants.PLAYER_X, B2DConstants.PLAYER_Y);
+    public float x;
+    public float y;
 
-    public PlayerUserData(float width, float height) {
+    public PlayerUserData(float width, float height, float x, float y) {
         super(width, height);
+        this.x = x;
+        this.y = y;
         userDataType = UserDataType.PLAYER;
     }
-
 
     public Vector2 getRunningPosition() {
         return runningPosition;
     }
-
 
 }

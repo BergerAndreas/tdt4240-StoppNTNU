@@ -11,6 +11,7 @@ import com.zombie.shooter.box2d.EnemyUserData;
 import com.zombie.shooter.box2d.PlayerUserData;
 import com.zombie.shooter.box2d.UserData;
 import com.zombie.shooter.box2d.WallUserData;
+import com.zombie.shooter.enums.BulletType;
 import com.zombie.shooter.enums.EnemyType;
 import com.zombie.shooter.enums.UserDataType;
 
@@ -44,23 +45,10 @@ public class B2DWorldUtils {
         return body;
     }
 
-    public static Body createRunner(World world) {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(new Vector2(B2DConstants.PLAYER_X, B2DConstants.PLAYER_Y));
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(B2DConstants.PLAYER_WIDTH / 2, B2DConstants.PLAYER_HEIGHT / 2);
-        Body body = world.createBody(bodyDef);
-        body.setGravityScale(B2DConstants.PLAYER_GRAVITY_SCALE);
-        body.createFixture(shape, B2DConstants.PLAYER_DENSITY);
-        body.resetMassData();
-        body.setUserData(new PlayerUserData(B2DConstants.PLAYER_WIDTH, B2DConstants.PLAYER_HEIGHT));
-        shape.dispose();
-        return body;
-    }
-
     public static Body createBullet(World world){
         //TODO: Set to same position as gun or player
+        BulletType bulletType = BulletType.BULLET;
+
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
         bodyDef.position.set(new Vector2(B2DConstants.PLAYER_X + 7f, 0F));
@@ -74,6 +62,26 @@ public class B2DWorldUtils {
         body.setUserData(new BulletUserData(3f,25f));
         return body;
     }
+
+
+
+    public static Body createRunner(World world) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(new Vector2(B2DConstants.PLAYER_X, B2DConstants.PLAYER_Y));
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(B2DConstants.PLAYER_WIDTH / 2, B2DConstants.PLAYER_HEIGHT / 2);
+        Body body = world.createBody(bodyDef);
+        body.setGravityScale(B2DConstants.PLAYER_GRAVITY_SCALE);
+        body.createFixture(shape, B2DConstants.PLAYER_DENSITY);
+        body.resetMassData();
+        body.setUserData(new PlayerUserData(
+                B2DConstants.PLAYER_WIDTH,
+                B2DConstants.PLAYER_HEIGHT, B2DConstants.PLAYER_X, B2DConstants.PLAYER_Y));
+        shape.dispose();
+        return body;
+    }
+
 
 
     public static Body createWall(World world, float x, float y, float width, float height) {

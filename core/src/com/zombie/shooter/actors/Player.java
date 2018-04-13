@@ -28,9 +28,8 @@ public class Player extends GameActor {
         stateTime = 0f;
     }
 
-    public Bullet shoot(Weapon weapon) {
-        System.out.println("Shooting bullet");
-        return weapon.shoot();
+    public Bullet shoot(Weapon weapon, float y) {
+        return weapon.shoot(y);
     }
 
     @Override

@@ -19,8 +19,7 @@ public class Weapon {
     private float bulletSpeed;
     private Queue<Bullet> clip;
     private int clipAmount; //How many clips the weapon has
-
-    //TODO: Add userData
+    private World world;
 
     public Weapon(String weaponName,
                   String texturePath,
@@ -28,7 +27,8 @@ public class Weapon {
                   int fireRate,
                   float bulletSpeed,
                   Vector2 bulletDirection,
-                  World world
+                  World world,
+                  float spawn_y
     ) {
 
         this.clip = new LinkedList<Bullet>();
@@ -37,28 +37,31 @@ public class Weapon {
         this.clipSize = clipSize;
         this.bulletDirection = bulletDirection;
         this.bulletSpeed = bulletSpeed;
+        this.world = world;
 
-        reload(new Bullet("bulletbill.png", 30, B2DWorldUtils.createBullet(world)));
+
+
+        reload();
     }
 
-    public void reload(Bullet bullet) {
+    public void reload() {
         clip.clear();
         System.out.println("Reload");
         for (int i = 0; i < clipSize; i++) {
-            clip.add(bullet);
+            clip.add(new Bullet("Weapons/pistol1.png", 30, B2DWorldUtils.createBullet(world)));
         }
         setClipAmount(this.getClipAmount() - 1);
     }
 
-    public Bullet shoot() {
+    public Bullet shoot(float y) {
         if (clip.isEmpty()) {
             System.out.println("Gun is empty, reload");
             return null;
         }
 
         Bullet currentBullet = clip.poll();
-        System.out.println(clip.size());
-        System.out.println(currentBullet.id + " is being fired");
+        currentBullet.setPosi_y(y);
+        currentBullet.getBody().setLinearVelocity(10f, 0f);
         currentBullet.setBulletDirection(getBulletDirection());
         return currentBullet;
     }

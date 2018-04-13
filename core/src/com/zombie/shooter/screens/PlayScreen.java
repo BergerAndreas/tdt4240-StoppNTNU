@@ -81,7 +81,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
     //Test Weapon
     private Weapon weapon;
-
+    private float posi_y = B2DConstants.PLAYER_Y;
 
     public PlayScreen(final ZombieShooter game) {
         super(game);
@@ -281,6 +281,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     }
 
     private void setupWeapons() {
+        System.out.println(player.getUserData().getRunningPosition().y);
         weapon = new Weapon(
                 "testWeapon",
                 "Weapons/ak1.png",
@@ -288,7 +289,8 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
                 1,
                 10,
                 new Vector2(10,0),
-                world
+                world,
+                player.getUserData().getRunningPosition().y
         );
     }
 
@@ -322,7 +324,13 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
                 if(playerLaneTouched(tmpVec2.x, tmpVec2.y)){
 
-                    player.setTransform(new Vector2(player.getUserData().getRunningPosition().x,tmpVec2.y/B2DConstants.PPM), 0);
+                    player.setTransform(new Vector2(
+                            player.getUserData().getRunningPosition().x,
+                            tmpVec2.y/B2DConstants.PPM), 0
+                    );
+                    setPosi_y(tmpVec2.y / B2DConstants.PPM);
+
+
                 }
                 return true;
             }
@@ -375,7 +383,9 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     //Method called when FireButton pressed
     private void onFireButtonPressed() {
         //Need to return a bullet to here
-        stage.addActor(player.shoot(weapon));
+        System.out.println(this.posi_y);
+
+        stage.addActor(player.shoot(weapon, this.posi_y));
         System.out.println("Button pressed");
     }
 
@@ -391,4 +401,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
     }
 
+    public void setPosi_y(float posi_y) {
+        this.posi_y = posi_y;
+    }
 }
