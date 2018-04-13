@@ -1,6 +1,6 @@
 android {
     buildToolsVersion "27.0.3"
-    compileSdkVersion 27
+    compileSdkVersion 25
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -18,11 +18,11 @@ android {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
     defaultConfig {
-        applicationId "com.zombie.shooter"
+        applicationId "co.aeons.zombie.shooter"
         minSdkVersion 15
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 25
+        versionCode 2
+        versionName "1.0.1"
     }
     buildTypes {
         release {
@@ -79,7 +79,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.zombie.shooter/com.zombie.shooter.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'co.aeons.zombie.shooter/co.aeons.zombie.shooter.AndroidLauncher'
 }
 
 // sets up the Android Eclipse project, using the old Ant based build.

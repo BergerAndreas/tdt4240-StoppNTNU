@@ -1,0 +1,72 @@
+package co.aeons.zombie.shooter.managers;
+
+import com.badlogic.gdx.Screen;
+import co.aeons.zombie.shooter.ZombieShooter;
+import co.aeons.zombie.shooter.screens.AbstractScreen;
+import co.aeons.zombie.shooter.screens.GameOverScreen;
+import co.aeons.zombie.shooter.screens.MenuScreen;
+import co.aeons.zombie.shooter.screens.PlayScreen;
+import co.aeons.zombie.shooter.screens.Splash;
+import co.aeons.zombie.shooter.utils.ResourceManager;
+
+import java.util.HashMap;
+
+/**
+ *  Created by opium on 09.03.18.
+ */
+
+public class GameScreenManager {
+
+    public final ZombieShooter app;
+    private HashMap<STATE, AbstractScreen> gameScreen;
+    public ResourceManager resourceManager;
+
+    //Add additional screens as they are added
+    public enum STATE{
+        SPLASH,
+        MAIN_MENU,
+        SINGLE_PLAYER,
+        MULTI_PLAYER_LOBBY,
+        MULTI_PLAYER,
+        SETTINGS,
+        GAME_OVER
+    }
+
+    public GameScreenManager(final ZombieShooter app){
+        this.app = app;
+        //Initializes resource manager
+        this.resourceManager = new ResourceManager();
+
+        initGameStates();
+
+        //Set start screen here
+        setScreen(STATE.SPLASH);
+    }
+
+    private void initGameStates(){
+        this.gameScreen = new HashMap<STATE, AbstractScreen>();
+
+        // Add new game states here
+        this.gameScreen.put(STATE.SINGLE_PLAYER, new PlayScreen(app,resourceManager));
+        this.gameScreen.put(STATE.MAIN_MENU, new MenuScreen(app,resourceManager));
+        this.gameScreen.put(STATE.SPLASH, new Splash(app,resourceManager));
+        this.gameScreen.put(STATE.GAME_OVER, new GameOverScreen(app,resourceManager));
+    }
+
+    public void setScreen(STATE nextScreen) {
+        app.setScreen(gameScreen.get(nextScreen));
+    }
+
+    public void resetPlayScreen(){
+//        Ignore warning, this shit bang
+        this.gameScreen.replace(STATE.SINGLE_PLAYER, new PlayScreen(app, resourceManager));
+    }
+
+    public void dispose(){
+        for(AbstractScreen screen : gameScreen.values()) {
+            if(screen != null) {
+                screen.dispose();
+            }
+        }
+    }
+}
