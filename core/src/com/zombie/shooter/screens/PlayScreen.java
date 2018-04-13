@@ -33,12 +33,15 @@ import com.zombie.shooter.box2d.WallUserData;
 import com.zombie.shooter.enums.UserDataType;
 import com.zombie.shooter.managers.GameScreenManager;
 import com.zombie.shooter.utils.AudioUtils;
+import com.zombie.shooter.actors.buttons.InstaKill;
 import com.zombie.shooter.utils.B2DConstants;
 import com.zombie.shooter.utils.B2DWorldUtils;
 import com.zombie.shooter.utils.ResourceManager;
 import com.zombie.shooter.utils.utils;
 
 import java.util.ArrayList;
+
+import java.util.Random;
 
 import static com.zombie.shooter.utils.B2DConstants.PPM;
 
@@ -68,13 +71,24 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     private ArrayList<Wall> walls;
     private Wall mainWall;
 
+    //Elapsed time for randomized spawns
+    private float timer;
+
+    //Randomized delay
+    private int spawnDelay;
+
+    //Flag for spawned powerup
+    private boolean isClicked = true;
+
     //Touchinput
     private Vector3 touchPoint;
     private Rectangle playerLane;
     private Rectangle fireBounds;
+    private Rectangle instakillBounds;
 
     //buttons
     private FireButton fireButton;
+    private InstaKill instakillButton;
 
     //Difficulty counter
     private int difficulty;
@@ -136,6 +150,28 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         world.step(1f / ZombieShooter.APP_FPS, 6, 2);
 
         //Handle updates here
+
+        //Stops timer when a powerup is on the field
+        if (isClicked) {
+            timer += delta;
+        }
+
+        //Spawns powerups in random intervals
+        //TODO: Change spawn area and placeholder image
+        if (timer > spawnDelay && isClicked) {
+            instakillBounds = new Rectangle(randInt(100,(int) this.stage.getCamera().viewportWidth - 100), randInt(100, (int) this.stage.getCamera().viewportHeight - 100),
+                    this.stage.getCamera().viewportWidth / 8, this.stage.getCamera().viewportHeight / 6);
+            //Creates a new instakill button with above bounds
+            instakillButton = new InstaKill(instakillBounds, new GameInstaKillListener());
+            //Adds instakill button to stage
+            this.stage.addActor(instakillButton);
+
+            //Reset variables for next spawning
+            isClicked = false;
+            spawnDelay = randInt(0,10);
+            timer = 0;
+        }
+
         this.stage.act(delta);
 
         this.gameTime += delta;
@@ -197,6 +233,8 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         background = resourceManager.getBackground();
         basicEnemyAnimation = resourceManager.getRunningAnimation();
         playerSprite = resourceManager.getPlayerSprite();
+        spawnDelay = randInt(0,10);
+        instakillButton = new InstaKill(new Rectangle(0, 0, 0, 0), new GameInstaKillListener());
     }
 
     // Creates enemy
@@ -275,7 +313,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
                 stage.getViewport().unproject(tmpVec2.set(x, y));
 
                 // Passes touch control to button observer thingy ¯\_(ツ)_/¯
-                if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
+                if (fireButton.getBounds().contains(tmpVec2.x, tmpVec2.y) || instakillButton.getBounds().contains(tmpVec2.x, tmpVec2.y)) {
                     stage.touchDown(x, y, pointer, button);
                 }
                 return true;
@@ -305,7 +343,13 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         return playerLane.contains(x, y);
     }
 
+    //Helper function to generate random integer
+    public static int randInt(int min, int max) {
 
+        Random rand = new Random();
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+        return randomNum;
+    }
 
     //Contact listeners
     @Override
@@ -409,4 +453,19 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
     }
 
+    //Instakill listener class
+    private class GameInstaKillListener implements InstaKill.InstakillListener {
+
+        @Override
+        public void instaKillActivate() {
+            InstakillPressed();
+        }
+    }
+
+    private void InstakillPressed() {
+        //TODO: activate instakill effect for a set duration
+        System.out.println("Instakill activated");
+        instakillButton.remove();
+        isClicked = true;
+    }
 }
