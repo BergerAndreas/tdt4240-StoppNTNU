@@ -1,9 +1,12 @@
 package com.zombie.shooter.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.assets.loaders.BitmapFontLoader;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -18,15 +21,24 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zombie.shooter.ZombieShooter;
 import com.zombie.shooter.managers.GameScreenManager;
+import com.zombie.shooter.managers.SaveFile;
 import com.zombie.shooter.utils.ResourceManager;
 
 import static com.zombie.shooter.utils.B2DConstants.PPM;
 
 /**
- * Created by Erikkvo on 12-Apr-18.
+ * Created by Erikkvo on 13-Apr-18.
  */
 
-public class GameOverScreen extends AbstractScreen {
+public class HighscoresScreen extends AbstractScreen {
+
+    private BitmapFont font;
+    private GlyphLayout layout;
+
+// Keeping track of highscores
+    private long[] highscores;
+    private String[] names;
+
 
     // Cameras and viewport
     private OrthographicCamera gameCam;
@@ -46,7 +58,7 @@ public class GameOverScreen extends AbstractScreen {
     private Texture background;
 
 
-    public GameOverScreen(final ZombieShooter game, ResourceManager resourceManager) {
+    public HighscoresScreen(final ZombieShooter game, ResourceManager resourceManager) {
         super(game);
 
         this.gameCam = new OrthographicCamera();
@@ -70,6 +82,14 @@ public class GameOverScreen extends AbstractScreen {
         skin = new Skin(Gdx.files.internal("skins/neutralizer-ui.json"));
         background = this.resourceManager.getBackground();
         stage = new Stage(gamePort, app.batch);
+
+//        To handle width (and height) of font
+        layout = new GlyphLayout();
+        font = new BitmapFont();
+
+        SaveFile.load();
+        highscores = SaveFile.gameData.getHighscores();
+        names = SaveFile.gameData.getNames();
     }
 
     @Override
@@ -77,10 +97,21 @@ public class GameOverScreen extends AbstractScreen {
         super.render(delta);
         b2dr.render(world, gameCam.combined.cpy().scl(PPM));
 
-        //Sets background of GameOverScreen
         app.batch.begin();
-//        app.batch.draw(background, 0, 0, ZombieShooter.APP_DESKTOP_WIDTH,
-//                ZombieShooter.APP_DESKTOP_HEIGHT);
+        String s = "Highscores";
+        font.getData().setScale(2, 2);
+        layout.setText(font, s);
+        float width = layout.width;
+
+        font.draw(app.batch, s, (ZombieShooter.APP_DESKTOP_WIDTH - width)/2, ZombieShooter.APP_DESKTOP_HEIGHT - 100);
+        for(int i=0; i<highscores.length; i++){
+            s = String.format("%2d. %7s %s", i+1, highscores[i], names[i]);
+            layout.setText(font, s);
+            float w = layout.width;
+            font.draw(app.batch, s, (ZombieShooter.APP_DESKTOP_WIDTH - w)/2, 400 - 30*i);
+        }
+
+
         app.batch.end();
 
         //Make stage show stuff
@@ -144,58 +175,23 @@ public class GameOverScreen extends AbstractScreen {
 
     //Place own methods here
     private void InitMenu() {
-        //Add stuff here
-        //Create Table
-        Table mainTable = new Table();
-        //Set table to fill stage
-        mainTable.setFillParent(true);
-        //Set alignment of contents in the table.
-        mainTable.center();
-        //Create buttons
 
-        TextButton restartButton = new TextButton("Restart", skin);
-        TextButton highscoresButton = new TextButton("Highscores", skin);
-        TextButton QuitGameButton = new TextButton("Quit Game", skin);
+        TextButton backButton = new TextButton("Back", skin);
 
 
         //Add listeners to buttons
-        restartButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-//                TODO change state to whatever the state was prior to "restart press"
-                app.gsm.resetPlayScreen();
-                app.gsm.setScreen(GameScreenManager.STATE.SINGLE_PLAYER);
-                //((Game)Gdx.app.getApplicationListener()).setScreen(new PlayScreen(app));
-            }
-        });
-//        Quit Game takes player to main menu screen
-        QuitGameButton.addListener(new ClickListener() {
+        //        Back takes player back to "Game Over" screen
+        backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 app.gsm.resetPlayScreen();
-                app.gsm.setScreen(GameScreenManager.STATE.MAIN_MENU);
+                app.gsm.setScreen(GameScreenManager.STATE.GAME_OVER);
             }
         });
 
-        //        Highscores takes player to highscores screen
-        highscoresButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                app.gsm.resetPlayScreen();
-                app.gsm.setScreen(GameScreenManager.STATE.HIGHSCORES);
-            }
-        });
-
-
-        //Add buttons to table
-        mainTable.add(restartButton);
-        mainTable.row();
-        mainTable.add(highscoresButton);
-        mainTable.row();
-        mainTable.add(QuitGameButton);
-
-        // Adds maintable to stage
-        stage.addActor(mainTable);
+        backButton.setPosition((ZombieShooter.APP_DESKTOP_WIDTH - backButton.getWidth())/2,50);
+        stage.addActor(backButton);
     }
+
 
 }
