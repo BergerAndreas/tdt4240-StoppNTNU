@@ -28,6 +28,7 @@ import com.zombie.shooter.actors.Enemy;
 import com.zombie.shooter.actors.Player;
 import com.zombie.shooter.actors.Wall;
 import com.zombie.shooter.actors.buttons.FireButton;
+import com.zombie.shooter.actors.weapons.Weapon;
 import com.zombie.shooter.enums.UserDataType;
 import com.zombie.shooter.utils.B2DConstants;
 import com.zombie.shooter.utils.B2DWorldUtils;
@@ -78,6 +79,10 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
     private float gameTime;
     private float prevVal;
 
+    //Test Weapon
+    private Weapon weapon;
+
+
     public PlayScreen(final ZombieShooter game) {
         super(game);
         this.gameCam = new OrthographicCamera();
@@ -102,7 +107,6 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         this.difficulty = 10;
         this.gameTime = 1.0f;
         this.prevVal = 1.0f;
-
     }
 
     @Override
@@ -188,11 +192,9 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
     @Override
     public void dispose() {
-
         super.dispose();
         this.world.dispose();
         this.background.dispose();
-
     }
 
     //Place own methods here
@@ -204,6 +206,7 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         setUpTouchControlAreas();
         setupInput();
         setupEdges();
+        setupWeapons();
 
     }
 
@@ -277,6 +280,17 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
         return playerLane.contains(x, y);
     }
 
+    private void setupWeapons() {
+        weapon = new Weapon(
+                "testWeapon",
+                "Weapons/ak1.png",
+                30,
+                1,
+                10,
+                new Vector2(10,0),
+                world
+        );
+    }
 
     private void setupInput() {
         // Enables playscreen to control input
@@ -360,7 +374,8 @@ public class PlayScreen extends AbstractScreen implements ContactListener {
 
     //Method called when FireButton pressed
     private void onFireButtonPressed() {
-        //TODO: implement fire button logic
+        //Need to return a bullet to here
+        stage.addActor(player.shoot(weapon));
         System.out.println("Button pressed");
     }
 

@@ -9,6 +9,6 @@ public enum UserDataType {
     PLAYER,
     ENEMY,
     WALL,
-    LANE
+    BULLET
 
 }

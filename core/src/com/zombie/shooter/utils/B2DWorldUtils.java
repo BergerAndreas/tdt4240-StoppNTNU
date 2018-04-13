@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.zombie.shooter.box2d.BulletUserData;
 import com.zombie.shooter.box2d.EnemyUserData;
 import com.zombie.shooter.box2d.PlayerUserData;
 import com.zombie.shooter.box2d.UserData;
@@ -57,6 +58,23 @@ public class B2DWorldUtils {
         shape.dispose();
         return body;
     }
+
+    public static Body createBullet(World world){
+        //TODO: Set to same position as gun or player
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.position.set(new Vector2(B2DConstants.PLAYER_X + 7f, 0F));
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(0.5f,0.2f);
+
+        Body body = world.createBody(bodyDef);
+        body.createFixture(shape, 1);
+        shape.dispose();
+        body.setUserData(new BulletUserData(3f,25f));
+        return body;
+    }
+
 
     public static Body createWall(World world, float x, float y, float width, float height) {
         BodyDef bodyDef = new BodyDef();

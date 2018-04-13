@@ -2,7 +2,9 @@ package com.zombie.shooter.actors.weapons;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.zombie.shooter.actors.bullets.Bullet;
+import com.zombie.shooter.utils.B2DWorldUtils;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -24,33 +26,41 @@ public class Weapon {
                   String texturePath,
                   int clipSize,
                   int fireRate,
-                  Vector2 bulletSpeed,
-                  Vector2 bulletDirection) {
+                  float bulletSpeed,
+                  Vector2 bulletDirection,
+                  World world
+    ) {
 
         this.clip = new LinkedList<Bullet>();
         this.weaponName = weaponName;
         this.texture = new Texture(texturePath);
         this.clipSize = clipSize;
         this.bulletDirection = bulletDirection;
-        this.bulletDirection = bulletSpeed;
+        this.bulletSpeed = bulletSpeed;
+
+        reload(new Bullet("bulletbill.png", 30, B2DWorldUtils.createBullet(world)));
     }
 
     public void reload(Bullet bullet) {
         clip.clear();
+        System.out.println("Reload");
         for (int i = 0; i < clipSize; i++) {
             clip.add(bullet);
         }
         setClipAmount(this.getClipAmount() - 1);
     }
 
-    public void shoot() {
+    public Bullet shoot() {
         if (clip.isEmpty()) {
             System.out.println("Gun is empty, reload");
-            return;
+            return null;
         }
 
         Bullet currentBullet = clip.poll();
+        System.out.println(clip.size());
+        System.out.println(currentBullet.id + " is being fired");
         currentBullet.setBulletDirection(getBulletDirection());
+        return currentBullet;
     }
 
     //Getters and setters
@@ -86,5 +96,6 @@ public class Weapon {
     public Vector2 getBulletDirection() {
         return bulletDirection;
     }
+
 
 }

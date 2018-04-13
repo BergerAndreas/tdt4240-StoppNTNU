@@ -39,12 +39,10 @@ public class Wall extends GameActor {
         super.draw(batch, parentAlpha);
 
         stateTime += Gdx.graphics.getDeltaTime();
-
         //FIXME: Add variables to constants config
         batch.draw(wallSprite, 100, 0, 60, 600);
 
     }
-
 
     //TODO: ADD hit logic
     public void wallHit(){

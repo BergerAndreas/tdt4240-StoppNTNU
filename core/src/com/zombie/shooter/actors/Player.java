@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.zombie.shooter.actors.bullets.Bullet;
+import com.zombie.shooter.actors.weapons.Weapon;
 import com.zombie.shooter.box2d.PlayerUserData;
 import com.zombie.shooter.box2d.UserData;
 import com.zombie.shooter.enums.GameState;
@@ -20,11 +22,15 @@ public class Player extends GameActor {
     private float stateTime;
     private Sprite player;
 
-
     public Player(Body body) {
         super(body);
         player = new Sprite(new Texture("player.png"));
         stateTime = 0f;
+    }
+
+    public Bullet shoot(Weapon weapon) {
+        System.out.println("Shooting bullet");
+        return weapon.shoot();
     }
 
     @Override
