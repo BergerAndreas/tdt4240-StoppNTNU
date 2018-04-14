@@ -9,19 +9,17 @@ import com.zombie.shooter.utils.ResourceManager;
 import java.util.HashMap;
 
 /**
- *  Created by opium on 09.03.18.
+ * Created by Erikkvo on 14-Apr-18.
  */
 
-public class GameScreenManager {
+public class GameStateManager {
 
-    private AbstractScreen gameState;
-
-    public GameScreenManager(){
+    public GameStateManager(){
 
     }
 
-//    public final ZombieShooter app;
-    private HashMap<STATE, AbstractScreen> gameScreen;
+    //    public final ZombieShooter app;
+    private HashMap<GameStateManager.STATE, AbstractScreen> gameState;
     public ResourceManager resourceManager;
 
     //Add additional screens as they are added
@@ -35,7 +33,7 @@ public class GameScreenManager {
         GAME_OVER
     }
 
-//    public GameScreenManager(final ZombieShooter app){
+//    public GameStateManager(final ZombieShooter app){
 //        this.app = app;
 //        //Initializes resource manager
 //        this.resourceManager = new ResourceManager();
@@ -47,22 +45,22 @@ public class GameScreenManager {
 //    }
 
     private void initGameStates(){
-        this.gameScreen = new HashMap<STATE, AbstractScreen>();
+        this.gameState = new HashMap<GameStateManager.STATE, AbstractScreen>();
 
         // Add new game states here
-        this.gameScreen.put(STATE.SINGLE_PLAYER, new PlayScreen(app,resourceManager));
-        this.gameScreen.put(STATE.MAIN_MENU, new MenuScreen(app,resourceManager));
-        this.gameScreen.put(STATE.SPLASH, new Splash(app,resourceManager));
-        this.gameScreen.put(STATE.GAME_OVER, new GameOverScreen(app,resourceManager));
+        this.gameState.put(GameScreenManager.STATE.SINGLE_PLAYER, new PlayScreen(this, resourceManager));
+        this.gameState.put(GameScreenManager.STATE.MAIN_MENU, new MenuScreen(this, resourceManager));
+        this.gameState.put(GameScreenManager.STATE.SPLASH, new Splash(this, resourceManager));
+        this.gameState.put(GameScreenManager.STATE.GAME_OVER, new GameOverScreen(this, resourceManager));
     }
 
-    public void setScreen(STATE nextScreen) {
-        app.setScreen(gameScreen.get(nextScreen));
+    public void setScreen(GameScreenManager.STATE nextScreen) {
+        app.setScreen(gameState.get(nextScreen));
     }
 
     public void resetPlayScreen(){
 //        Ignore warning, this shit bang
-        this.gameScreen.replace(STATE.SINGLE_PLAYER, new PlayScreen(app, resourceManager));
+        this.gameState.replace(GameScreenManager.STATE.SINGLE_PLAYER, new PlayScreen(this, resourceManager));
     }
 
     public void update(float dt){
@@ -74,10 +72,11 @@ public class GameScreenManager {
     }
 
     public void dispose(){
-        for(AbstractScreen screen : gameScreen.values()) {
+        for(AbstractScreen screen : gameState.values()) {
             if(screen != null) {
                 screen.dispose();
             }
         }
     }
+
 }
