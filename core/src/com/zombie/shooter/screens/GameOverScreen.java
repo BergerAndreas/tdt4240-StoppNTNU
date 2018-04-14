@@ -53,8 +53,8 @@ public class GameOverScreen extends AbstractScreen {
 
         // Initializes a new viewport
         this.gamePort = new FitViewport(
-                ZombieShooter.APP_DESKTOP_WIDTH,
-                ZombieShooter.APP_DESKTOP_HEIGHT,
+                ZombieShooter.WIDTH,
+                ZombieShooter.HEIGHT,
                 gameCam
         );
         gamePort.apply();
@@ -62,8 +62,6 @@ public class GameOverScreen extends AbstractScreen {
         //sets up camera
         gameCam.position.set(this.gameCam.viewportWidth / 2, this.gameCam.viewportHeight / 2, 0);
         gameCam.update();
-        // Initializes box2d renderer
-        b2dr = new Box2DDebugRenderer();
         //Initialize skins
         this.resourceManager = resourceManager;
         atlas = new TextureAtlas(Gdx.files.internal("skins/neutralizer-ui.atlas"));
