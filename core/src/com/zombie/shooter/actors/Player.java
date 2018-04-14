@@ -32,13 +32,9 @@ public class Player {
     public void incrementScore(long p){
         this.score += p;
     }
-
     public void setPosition(float y){
         this.y = y;
     }
-
-
-    @Override
     public void draw(Batch batch, float parentAlpha) {
 
     }

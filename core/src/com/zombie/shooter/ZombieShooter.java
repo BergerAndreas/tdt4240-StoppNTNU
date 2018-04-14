@@ -1,19 +1,14 @@
 package com.zombie.shooter;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.zombie.shooter.managers.GameScreenManager;
-import com.zombie.shooter.utils.AudioUtils;
+import com.zombie.shooter.managers.GameStateManager;
 
 public class ZombieShooter implements ApplicationListener {
 
@@ -30,7 +25,7 @@ public class ZombieShooter implements ApplicationListener {
 
 	// Mangers
 	public AssetManager assets;
-	private GameScreenManager gsm;
+	private GameStateManager gsm;
 
 	public SpriteBatch batch;
 	public ShapeRenderer shapeBatch;
@@ -46,7 +41,7 @@ public class ZombieShooter implements ApplicationListener {
 		cam.translate(WIDTH / 2, HEIGHT / 2);
 		cam.update();
 
-		gsm = new GameScreenManager();
+		gsm = new GameStateManager();
 
 		shapeBatch = new ShapeRenderer();
 		batch = new SpriteBatch();
@@ -69,7 +64,6 @@ public class ZombieShooter implements ApplicationListener {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		gsm.
 		gsm.update(Gdx.graphics.getDeltaTime());
 		gsm.draw();
 
@@ -90,7 +84,6 @@ public class ZombieShooter implements ApplicationListener {
 
 	@Override
 	public void dispose () {
-		super.dispose();
 		batch.dispose();
 		shapeBatch.dispose();
 		assets.dispose();

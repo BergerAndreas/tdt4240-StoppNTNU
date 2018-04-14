@@ -11,6 +11,8 @@ public enum GameState {
     SINGLE_PLAYER,
     MULTI_PLAYER_LOBBY,
     MULTI_PLAYER,
-    SETTINGS
+    SETTINGS;
 
+    public void dispose() {
+    }
 }

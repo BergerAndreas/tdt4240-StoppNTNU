@@ -1,6 +1,5 @@
 package com.zombie.shooter.screens;
 
-import com.zombie.shooter.managers.GameScreenManager;
 import com.zombie.shooter.managers.GameStateManager;
 
 /**

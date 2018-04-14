@@ -1,28 +1,15 @@
 package com.zombie.shooter.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.zombie.shooter.ZombieShooter;
-import com.zombie.shooter.enums.GameState;
-import com.zombie.shooter.managers.GameScreenManager;
 import com.zombie.shooter.managers.GameStateManager;
 import com.zombie.shooter.utils.ResourceManager;
-
-import static com.zombie.shooter.utils.B2DConstants.PPM;
 
 /**
  * Created by Erikkvo on 12-Apr-18.
