@@ -27,7 +27,7 @@ import static com.zombie.shooter.utils.B2DConstants.PPM;
  * Created by Torstein on 3/11/2018.
  */
 
-public class MenuScreen extends AbstractState {
+public class MenuState extends AbstractState {
 
     //Skins, textures and sprites
     private ResourceManager resourceManager;
@@ -35,7 +35,7 @@ public class MenuScreen extends AbstractState {
     private TextureAtlas atlas;
     private Texture background;
 
-    public MenuScreen(GameStateManager gsm, ResourceManager resourceManager) {
+    public MenuState(GameStateManager gsm, ResourceManager resourceManager) {
         super(gsm);
 
         //Initialize skins
@@ -77,7 +77,7 @@ public class MenuScreen extends AbstractState {
     public void render(float delta) {
 //        super.render(delta);
 //
-//        //Sets background of menuscreen
+//        //Sets background of menustate
 //        app.batch.begin();
 //        app.batch.end();
 //

@@ -1,6 +1,7 @@
 package com.zombie.shooter.screens;
 
 import com.zombie.shooter.managers.GameScreenManager;
+import com.zombie.shooter.managers.GameStateManager;
 
 /**
  * Created by Erikkvo on 14-Apr-18.
@@ -8,9 +9,9 @@ import com.zombie.shooter.managers.GameScreenManager;
 
 public abstract class AbstractState{
 
-    protected GameScreenManager gsm;
+    protected GameStateManager gsm;
 
-    protected AbstractState(GameScreenManager gsm){
+    protected AbstractState(GameStateManager gsm){
         this.gsm = gsm;
         init();
     }

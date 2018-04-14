@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zombie.shooter.ZombieShooter;
 import com.zombie.shooter.managers.GameScreenManager;
+import com.zombie.shooter.managers.GameStateManager;
 import com.zombie.shooter.tween.SpriteAccessor;
 import com.zombie.shooter.utils.ResourceManager;
 
@@ -24,49 +25,32 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 
+import static com.badlogic.gdx.Gdx.app;
+
 /**
  * Created by Erikkvo on 09-Apr-18.
  */
 
-public class Splash extends AbstractScreen {
+public class Splash extends AbstractState {
 
-    public final ZombieShooter app;
-    // Cameras and viewport
-    private OrthographicCamera gameCam;
-    private Viewport gamePort;
-    private Stage stage;
+    private SpriteBatch batch;
 
     private Texture background;
-
     private ResourceManager resourceManager;
-    private SpriteBatch batch;
     private Sprite splash;
     private TweenManager tweenManager;
 
-    public Splash(final ZombieShooter game, ResourceManager resourceManager) {
-        this.gameCam = new OrthographicCamera();
-        this.app = game;
+    public Splash(GameStateManager gsm, ResourceManager resourceManager) {
+        super(gsm);
 
-        // Initializes a new viewport
-        this.gamePort = new FitViewport(
-                ZombieShooter.WIDTH,
-                ZombieShooter.HEIGHT,
-                gameCam
-        );
-        gamePort.apply();
-
-        // Sets up camera
-        gameCam.position.set(this.gameCam.viewportWidth / 2, this.gameCam.viewportHeight / 2, 0);
-        gameCam.update();
-        // Initializes box2d renderer
         this.resourceManager = resourceManager;
         background = new Texture("logo.png");
-        stage = new Stage(gamePort, app.batch);
     }
 
     @Override
     public void init() {
-
+        batch = new SpriteBatch();
+        tweenManager = new TweenManager();
     }
 
     @Override
@@ -84,10 +68,7 @@ public class Splash extends AbstractScreen {
 
     }
 
-    @Override
     public void show() {
-        batch = new SpriteBatch();
-        tweenManager = new TweenManager();
 //        Tween does not know there is a successor, thus we need to register it
         Tween.registerAccessor(Sprite.class, new SpriteAccessor());
 
@@ -101,18 +82,17 @@ public class Splash extends AbstractScreen {
 
         //Initialize resources while splash screen shows
         initializeResources();
-        Tween.to(splash, SpriteAccessor.ALPHA, 3f).target(1).repeatYoyo(1, 0f).setCallback(new TweenCallback() { // Delay and fade out
-
-
-            //        Switch to menu screen
-            @Override
-            public void onEvent(int type, BaseTween<?> source) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new MenuScreen(app, resourceManager));
-            }
-        }).start(tweenManager);
+//        Tween.to(splash, SpriteAccessor.ALPHA, 3f).target(1).repeatYoyo(1, 0f).setCallback(new TweenCallback() { // Delay and fade out
+//
+//
+//            //        Switch to menu screen
+//            @Override
+//            public void onEvent(int type, BaseTween<?> source) {
+//                ((Game) app.getApplicationListener()).setScreen(new MenuScreen(this, resourceManager));
+//            }
+//        }).start(tweenManager);
     }
 
-    @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -122,26 +102,6 @@ public class Splash extends AbstractScreen {
         batch.begin();
         splash.draw(batch);
         batch.end();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
     }
 
     @Override
