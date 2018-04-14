@@ -14,6 +14,7 @@ import com.zombie.shooter.ZombieShooter;
 import com.zombie.shooter.actors.Bullet;
 import com.zombie.shooter.actors.Enemy;
 import com.zombie.shooter.actors.Player;
+import com.zombie.shooter.managers.GameScreenManager;
 
 import java.util.ArrayList;
 
@@ -35,10 +36,15 @@ public class PlayScreen extends AbstractScreen{
     private ArrayList<Bullet> bullets;
     private ArrayList<Enemy> enemies;
 
+    public PlayScreen(GameScreenManager gsm){
+        super(gsm);
+        init();
+    }
 
+    @Override
+    public void init() {
 
-
-
+    }
 
     public void update(float dt) {
         // get user input
@@ -62,11 +68,8 @@ public class PlayScreen extends AbstractScreen{
             }
         }
 
-
         // check collision
         checkCollisions();
-
-
 
     }
 
@@ -101,6 +104,16 @@ public class PlayScreen extends AbstractScreen{
             enemies.get(i).draw(sb);
         }
 
+
+    }
+
+    @Override
+    public void handleInput() {
+
+    }
+
+    @Override
+    public void dispose() {
 
     }
 

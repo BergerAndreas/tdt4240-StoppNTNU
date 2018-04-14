@@ -1,6 +1,7 @@
 package com.zombie.shooter;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -14,22 +15,22 @@ import com.badlogic.gdx.math.Vector2;
 import com.zombie.shooter.managers.GameScreenManager;
 import com.zombie.shooter.utils.AudioUtils;
 
-public class ZombieShooter extends Game {
+public class ZombieShooter implements ApplicationListener {
 
 	public static String APP_TITLE = "Ugly Z";
 	public static double APP_VERSION = 0.1;
-	public static int APP_DESKTOP_WIDTH = 1024;
-	public static int APP_DESKTOP_HEIGHT = 576;
+//	public static int APP_DESKTOP_WIDTH = 1024;
+//	public static int APP_DESKTOP_HEIGHT = 576;
 	public static int APP_FPS = 60; //Cinematic?!??!
-	public static OrthographicCamera cam;
 
 	public static int WIDTH;
 	public static int HEIGHT;
+	public static OrthographicCamera cam;
 
 
 	// Mangers
 	public AssetManager assets;
-	public GameScreenManager gsm;
+	private GameScreenManager gsm;
 
 	public SpriteBatch batch;
 	public ShapeRenderer shapeBatch;
@@ -37,32 +38,38 @@ public class ZombieShooter extends Game {
 
 	@Override
 	public void create () {
+
+		WIDTH = Gdx.graphics.getWidth();
+		HEIGHT = Gdx.graphics.getHeight();
+		cam = new OrthographicCamera(WIDTH, HEIGHT);
+		// Place camera into screen region
+		cam.translate(WIDTH / 2, HEIGHT / 2);
+		cam.update();
+
+		gsm = new GameScreenManager();
+
 		shapeBatch = new ShapeRenderer();
 		batch = new SpriteBatch();
 
 		assets = new AssetManager();
-		gsm = new GameScreenManager(this);
 //		Initialize audio
-		AudioUtils.getInstance().init();
+//		AudioUtils.getInstance().init();
 
-		WIDTH = Gdx.graphics.getWidth();
-		HEIGHT = Gdx.graphics.getHeight();
+	}
 
-		cam = new OrthographicCamera(WIDTH, HEIGHT);
-		cam.translate(WIDTH / 2, HEIGHT / 2);
-		cam.update();
-
+	@Override
+	public void resize(int width, int height) {
 
 	}
 
 	@Override
 	public void render () {
-		super.render();
 
 		// clear screen to black
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		gsm.
 		gsm.update(Gdx.graphics.getDeltaTime());
 		gsm.draw();
 
@@ -70,7 +77,17 @@ public class ZombieShooter extends Game {
 			Gdx.app.exit();
 		}
 	}
-	
+
+	@Override
+	public void pause() {
+
+	}
+
+	@Override
+	public void resume() {
+
+	}
+
 	@Override
 	public void dispose () {
 		super.dispose();

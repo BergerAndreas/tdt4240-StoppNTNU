@@ -17,7 +17,13 @@ import java.util.HashMap;
 
 public class GameScreenManager {
 
-    public final ZombieShooter app;
+    private AbstractScreen gameState;
+
+    public GameScreenManager(){
+
+    }
+
+//    public final ZombieShooter app;
     private HashMap<STATE, AbstractScreen> gameScreen;
     public ResourceManager resourceManager;
 
@@ -32,16 +38,16 @@ public class GameScreenManager {
         GAME_OVER
     }
 
-    public GameScreenManager(final ZombieShooter app){
-        this.app = app;
-        //Initializes resource manager
-        this.resourceManager = new ResourceManager();
-
-        initGameStates();
-
-        //Set start screen here
-        setScreen(STATE.SPLASH);
-    }
+//    public GameScreenManager(final ZombieShooter app){
+//        this.app = app;
+//        //Initializes resource manager
+//        this.resourceManager = new ResourceManager();
+//
+//        initGameStates();
+//
+//        //Set start screen here
+//        setScreen(STATE.SPLASH);
+//    }
 
     private void initGameStates(){
         this.gameScreen = new HashMap<STATE, AbstractScreen>();
@@ -60,6 +66,14 @@ public class GameScreenManager {
     public void resetPlayScreen(){
 //        Ignore warning, this shit bang
         this.gameScreen.replace(STATE.SINGLE_PLAYER, new PlayScreen(app, resourceManager));
+    }
+
+    public void update(float dt){
+        gameState.update(dt);
+    }
+
+    public void draw(){
+        gameState.draw();
     }
 
     public void dispose(){
