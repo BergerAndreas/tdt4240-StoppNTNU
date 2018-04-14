@@ -77,7 +77,7 @@ public class Enemy {
 
 
         sb.begin();
-        sb.draw(sprite, 0, 0, ZombieShooter.APP_DESKTOP_WIDTH, ZombieShooter.APP_DESKTOP_HEIGHT);
+        sb.draw(sprite, 0, 0, ZombieShooter.WIDTH, ZombieShooter.HEIGHT);
         sb.end();
     }
 

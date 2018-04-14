@@ -85,6 +85,11 @@ public class MenuScreen extends AbstractScreen {
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void update(float delta) {
         // Move world forward
         // Why 6 and 2? I don't know
@@ -93,6 +98,16 @@ public class MenuScreen extends AbstractScreen {
         //Handle updates here
 
         this.stage.act(delta);
+    }
+
+    @Override
+    public void draw() {
+
+    }
+
+    @Override
+    public void handleInput() {
+
     }
 
     @Override

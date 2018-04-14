@@ -25,7 +25,7 @@ public class Bullet {
 
     public void draw(ShapeRenderer sr) {
         sr.setColor(1, 1, 1, 1);
-        sr.begin(ShapeRenderer.ShapeType.Circle);
+//        sr.begin(ShapeRenderer.ShapeType.Circle);
         sr.circle(1,1,1);
         sr.end();
     }

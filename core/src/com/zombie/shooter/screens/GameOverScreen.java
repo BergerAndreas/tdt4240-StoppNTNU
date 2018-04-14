@@ -89,11 +89,26 @@ public class GameOverScreen extends AbstractScreen {
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void update(float delta) {
         // Move world forward
         world.step(1f / ZombieShooter.APP_FPS, 6, 2);
         //Handle updates here
         this.stage.act(delta);
+    }
+
+    @Override
+    public void draw() {
+
+    }
+
+    @Override
+    public void handleInput() {
+
     }
 
     @Override

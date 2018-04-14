@@ -44,14 +44,13 @@ public class Splash extends AbstractScreen {
     private TweenManager tweenManager;
 
     public Splash(final ZombieShooter game, ResourceManager resourceManager) {
-        super(game);
         this.gameCam = new OrthographicCamera();
         this.app = game;
 
         // Initializes a new viewport
         this.gamePort = new FitViewport(
-                ZombieShooter.APP_DESKTOP_WIDTH,
-                ZombieShooter.APP_DESKTOP_HEIGHT,
+                ZombieShooter.WIDTH,
+                ZombieShooter.HEIGHT,
                 gameCam
         );
         gamePort.apply();
@@ -66,7 +65,22 @@ public class Splash extends AbstractScreen {
     }
 
     @Override
+    public void init() {
+
+    }
+
+    @Override
     public void update(float delta) {
+
+    }
+
+    @Override
+    public void draw() {
+
+    }
+
+    @Override
+    public void handleInput() {
 
     }
 

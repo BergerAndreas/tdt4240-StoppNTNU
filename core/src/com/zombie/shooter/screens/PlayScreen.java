@@ -31,7 +31,6 @@ public class PlayScreen extends AbstractScreen{
     private Player player;
 
     private BitmapFont font;
-    private Player hudPlayer;
 
     private ArrayList<Bullet> bullets;
     private ArrayList<Enemy> enemies;
